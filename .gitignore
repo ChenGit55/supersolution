@@ -4,9 +4,6 @@ tests.css
 tests.html
 .vscode/
 
-#staticfolder
-static/
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
