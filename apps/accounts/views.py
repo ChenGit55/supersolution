@@ -25,5 +25,11 @@ def login_view(request):
             context = {'error': 'Invalid username or password!'}
             return render(request, 'accounts/login.html', context)
         login(request, user)
-        return redirect('/admin/') 
+        return redirect('home') 
     return render(request, 'accounts/login.html',{})
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        redirect('login')
+    return render(request, 'accounts/logout.html', {})
