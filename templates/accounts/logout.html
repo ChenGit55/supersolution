@@ -1,6 +1,3 @@
-{% extends 'base.html' %}
-{% block title %}Login{% endblock %}
-{% block boddy %}
     <h1>Página de Logout</h1>
     {% if request.user.is_authenticated %}
         <form action='' method='POST'> {% csrf_token %}
@@ -14,5 +11,3 @@
         <a href="{% url 'login' %}"><button>Entrar</button></a>
         <a href="{% url 'signup' %}"><button>Cadastrar</button></a>
 	{% endif %}
-
-{% endblock %}

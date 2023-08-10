@@ -1,6 +1,3 @@
-{% extends 'base.html' %}
-{% block title %}Login{% endblock %}
-{% block boddy %}
 <h1>Página de Login</h1>
 
 {% if not request.user.is_authenticated %}
@@ -17,5 +14,3 @@
 {% endif %}
 
 <a href="{% url 'signup' %}"><button>Cadastro</button></a>
-
-{% endblock %}
