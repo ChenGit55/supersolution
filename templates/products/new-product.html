@@ -1,5 +1,11 @@
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enviar</button>
-</form>
+{% extends 'base.html' %}
+{% block title %}Super Solution{% endblock %}
+{% block boddy %}
+    <h1>Painel Cadastro de Produtos</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
+    
+{% endblock %}
