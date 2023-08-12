@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
-def sale_view (request):    
+def sales_view (request):    
     return render (request, 'pos/sale.html', {})
 
