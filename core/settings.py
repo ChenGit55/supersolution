@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.products',
     'apps.pos',
+    'apps.clients',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
