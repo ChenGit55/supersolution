@@ -3,9 +3,11 @@
 {% block boddy %}
     <h1>Painel Produtos</h1>
     <a href="{% url 'new-product' %}">Cadastrar Produto</a>
-    <ul style="list-style-type: none;">
-        {% for product in products %}
-        <a href="#"><li>{{ product.name }}</li> </a>       
-        {% endfor %}
-    </ul>
+    <form action="." method="GET">
+        <ul style="list-style-type: none;">
+            {% for product in products %}
+            <a href="{% url 'product-detail' code=product.code %}"><li>{{ product.name }}</li> </a>       
+            {% endfor %}
+        </ul>
+    </form>
 {% endblock %}
