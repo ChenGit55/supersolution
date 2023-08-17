@@ -2,7 +2,7 @@
 {% block title %}Super Solution{% endblock %}
 {% block boddy %}
     <h1>Painel Produtos</h1>
-    <a href="{% url 'new-product' %}">Cadastrar Produto</a>
+    <h5><a href="{% url 'new-product' %}">Cadastrar Produto</a></h5>
         <ul style="list-style-type: none;">
             <h2>Produtos</h2>
             {% for product in products %}
