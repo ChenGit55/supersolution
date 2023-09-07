@@ -1,10 +1,20 @@
 from django.shortcuts import render, redirect
 from .forms import AddProductForm
 from .models import Product
+from rest_framework import generics
+from .serializers import ProductSerializer
+
+class ProductList(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
 
 def product_list_view(request, code=None):
     products = Product.objects.all()
-    context = {'products' : products}
+    context = {
+        'products' : products,
+        }
     return render(request,'products/products.html', context)
 
 def new_product_view(request):
