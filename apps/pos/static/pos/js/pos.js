@@ -46,14 +46,18 @@ fetch(apiUrl)
     })
 
     addProductButton.addEventListener('click', function() {
-      var productTotal = quantityField.value*parseFloat(priceField.value.replace(',','.'));
-      var inoviceItem = document.createElement('li');
-      var productTitle = productSelect.options[productSelect.selectedIndex].text;
-      inoviceItem.textContent = `${productTitle} Preço R$ ${fCurrency(priceField.value)} Qantidade ${quantityField.value} Total: ${fCurrency(productTotal)}`;
-      inoviceList.appendChild(inoviceItem);
+      if( priceField.value !== "" && priceField.value !== 0 && quantityField.value !== 0 && quantityField.value !== "" ){        
+        var productTotal = quantityField.value*parseFloat(priceField.value.replace(',','.'));
+        var inoviceItem = document.createElement('li');
+        var productTitle = productSelect.options[productSelect.selectedIndex].text;
+        inoviceItem.textContent = `${productTitle} Preço R$ ${fCurrency(priceField.value)} Qantidade ${quantityField.value} Total: ${fCurrency(productTotal)}`;
+        inoviceList.appendChild(inoviceItem);
 
-      priceField.value = '';
-      quantityField.value = '';
+        priceField.value = '';
+        quantityField.value = '';
+      } else {
+
+      }
     })
 
   })
