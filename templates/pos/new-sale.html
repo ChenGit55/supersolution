@@ -1,13 +1,29 @@
 {% extends 'base.html' %}
-
+{% load rest_framework %}
+{% load static %}
 {% block title %}{% endblock %}
+{% block head %}
 
-{% block header %}
 {% endblock %}
 
-{% block boddy %}
+{% block body %}
 <h1>Nova Venda</h1>
+<span id="api" hidden="true" data-api-url="{% url 'api-products' %}">api</span>
+<ul id="product-list"></ul>
+
+<select name="products-select" id="product-select"></select>
+
+R$<input type="text" name="product-price" id="product-price" placeholder="Preço">
+<input type="text" name="product-quantity" id="product-quantity" placeholder="Quantidade">
+
+<button name="add-product" id="add-product">Adicionar produto</button>
+
+<ul name="inovice-list" id="inovice-list"></ul>
+
+
+<script src="{% static 'pos/js/pos.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
 {% endblock %}
+
