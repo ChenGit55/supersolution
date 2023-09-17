@@ -9,6 +9,7 @@
 {% block body %}
 <h1>Nova Venda</h1>
 Vendedor: {{ user.username }}
+<input type="text" hidden="true" name="user" id="user" value="{{ user.id }}">
 
 <span id="apiproducts" hidden="true" data-api-url="{% url 'api-products' %}">api</span>
 <span id="apisales" hidden="true" data-api-url="{% url 'api-sales' %}"></span>
