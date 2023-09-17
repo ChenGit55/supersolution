@@ -8,6 +8,9 @@ var quantityField = document.getElementById('product-quantity');
 var totProductField = document.getElementById('product-total');
 const inoviceList = document.getElementById('inovice-list');
 const addProductButton = document.getElementById('add-product');
+var productsList = [];
+var inoviceTotal = document.getElementById('inovice-total');
+var currentTotal = 0
 
 // currency format
 function fCurrency(value) {
@@ -31,7 +34,6 @@ fetch(apiProdcutsUrl)
   .then(function(data) {
     // Agora, 'data' contém o objeto JSON da API
     console.log(data);
-
     
     // criando menu select com os dados da api
     var productSelect = document.getElementById('product-select');
@@ -48,10 +50,28 @@ fetch(apiProdcutsUrl)
     })
 
     addProductButton.addEventListener('click', function() {
-      if(Boolean(priceField.value) && Boolean(quantityField.value)){        
+      var selectedProductIndex = productSelect.selectedIndex;
+      if(Boolean(priceField.value) && Boolean(quantityField.value) && selectedProductIndex !== -1 ){        
         var productTotal = quantityField.value*parseFloat(priceField.value.replace(',','.'));
         var inoviceItem = document.createElement('li');
         var productTitle = productSelect.options[productSelect.selectedIndex].text;
+
+        var selectedProduct = data[selectedProductIndex];
+        var inputPrice = parseFloat(priceField.value.replace(',','.'));
+        var inputQuantity = quantityField.value;
+        var inputTotal = productTotal;
+
+        currentTotal += productTotal;
+        inoviceTotal.textContent = currentTotal
+
+        productsList.push({
+          product: selectedProduct.title,
+          quantity: inputQuantity,
+          price: inputPrice,
+          total: inputTotal,
+        });
+        console.log(productsList);
+        
         inoviceItem.textContent = `${productTitle} Preço R$ ${fCurrency(priceField.value)} Qantidade ${quantityField.value} Total: ${fCurrency(productTotal)}`;
         inoviceList.appendChild(inoviceItem);
 
@@ -61,8 +81,41 @@ fetch(apiProdcutsUrl)
 
       }
     })
-
   })
   .catch(function(error) {
     console.error('Erro: ' + error.message);
   });
+
+  // Adicione um evento de clique ao botão "Finalizar Venda"
+document.getElementById('close-inovice').addEventListener('click', function() {
+  if (productsList.length > 0) {
+    // Crie a venda completa com todos os produtos selecionados
+    var vendaCompleta = {
+      user: userID, // Substitua pelo ID do usuário adequado
+      items: productsList
+    };
+
+    fetch(apiSalesUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(vendaCompleta),
+    })
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error('Erro ao criar a venda');
+      }
+      return response.json();
+    })
+    .then(function(data) {
+      console.log('Venda criada com sucesso:', data);
+      // Faça algo com a resposta do servidor, se necessário
+    })
+    .catch(function(error) {
+      console.error('Erro ao criar a venda:', error);
+    });
+  } else {
+    console.error('Nenhum produto selecionado. Selecione pelo menos um produto antes de finalizar a venda.');
+  }
+});

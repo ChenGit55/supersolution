@@ -13,17 +13,21 @@ Vendedor: {{ user.username }}
 
 <span id="apiproducts" hidden="true" data-api-url="{% url 'api-products' %}">api</span>
 <span id="apisales" hidden="true" data-api-url="{% url 'api-sales' %}"></span>
-<ul id="product-list"></ul>
+<form action="." method="POST">{% csrf_token %}    
+    <select name="products-select" id="product-select"></select>
+    R$<input type="text" name="product-price" id="product-price" placeholder="Preço">
+    <input type="text" name="product-quantity" id="product-quantity" placeholder="Quantidade">
+    
+</form>
 
-<select name="products-select" id="product-select"></select>
+<button name="add-product" id="add-product">Adicionar produto</button>    
 
-R$<input type="text" name="product-price" id="product-price" placeholder="Preço">
-<input type="text" name="product-quantity" id="product-quantity" placeholder="Quantidade">
+<ul name="inovice-list" id="inovice-list">
+    
+</ul>
+    Total: <span type="number" name="inovice-total" id="inovice-total">
 
-<button name="add-product" id="add-product">Adicionar produto</button>
-
-<ul name="inovice-list" id="inovice-list"></ul>
-
+<button name="close-inovice" id="close-inovice">Encerrar nota</button>
 
 <script src="{% static 'pos/js/pos.js' %}"></script>
 {% endblock %}
