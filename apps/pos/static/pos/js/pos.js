@@ -1,6 +1,8 @@
 console.log('test')
-var api = document.getElementById('api');
-var apiUrl = api.getAttribute('data-api-url');
+const apiProducts = document.getElementById('apiproducts');
+const apiProdcutsUrl = apiProducts.getAttribute('data-api-url');
+const apiSales = document.getElementById('apisales');
+const apiSalesUrl = apiSales.getAttribute('data-api-url');
 var priceField = document.getElementById('product-price');
 var quantityField = document.getElementById('product-quantity');
 var totProductField = document.getElementById('product-total');
@@ -17,7 +19,7 @@ function fCurrency(value) {
   }
 }
 
-fetch(apiUrl)
+fetch(apiProdcutsUrl)
   .then(function(response) {
     // Verifique se a resposta da API está OK (código de status 200)
     if (!response.ok) {
@@ -63,4 +65,44 @@ fetch(apiUrl)
   })
   .catch(function(error) {
     console.error('Erro: ' + error.message);
+  });
+
+addProductButton.addEventListener('click', function() {
+    var sale = {
+      user: 1,  // Substitua pelo ID do usuário adequado
+      items: [
+        {
+          product: 1,  // Substitua pelo ID do produto adequado
+          quantity: 2,
+          price: 10.99
+        },
+        {
+          product: 2,  // Substitua pelo ID do produto adequado
+          quantity: 3,
+          price: 15.99
+        }
+        // Adicione mais itens conforme necessário
+      ]
+    };
+  
+    fetch(apiSalesUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(venda),
+    })
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error('Erro ao criar a venda');
+      }
+      return response.json();
+    })
+    .then(function(data) {
+      console.log('Venda criada com sucesso:', data);
+      // Faça algo com a resposta do servidor, se necessário
+    })
+    .catch(function(error) {
+      console.error('Erro ao criar a venda:', error);
+    });
   });

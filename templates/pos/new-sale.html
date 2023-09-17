@@ -8,7 +8,10 @@
 
 {% block body %}
 <h1>Nova Venda</h1>
-<span id="api" hidden="true" data-api-url="{% url 'api-products' %}">api</span>
+Vendedor: {{ user.username }}
+
+<span id="apiproducts" hidden="true" data-api-url="{% url 'api-products' %}">api</span>
+<span id="apisales" hidden="true" data-api-url="{% url 'api-sales' %}"></span>
 <ul id="product-list"></ul>
 
 <select name="products-select" id="product-select"></select>
