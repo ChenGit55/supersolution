@@ -37,7 +37,7 @@ class SaleItem(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.sale} - Name: {self.product} - Qtd: {self.quantity} - Price: {self.price} - Total: {self.total}'
+        return f' ({self.sale.id}) - Name: {self.product} - Qtd: {self.quantity} - Price: {self.price} - Total: {self.total}'
 
     def calculate_total_item(self):
         return self.quantity * self.price
