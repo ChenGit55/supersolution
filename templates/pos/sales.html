@@ -8,5 +8,8 @@
 {% block body %}
     <h1>Painel de Vendas</h1>
     <h5><a href="{% url 'new-sale' %}">Nova Venda</a></h5>
-        </ul>   
+
+    {% for sale in sales %}
+        {{ sale.id }} {{ sale.formatted_date }} {{ sale.user.username }}
+    {% endfor %}
 {% endblock %}

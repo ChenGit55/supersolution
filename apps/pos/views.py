@@ -25,7 +25,11 @@ class SaleItemViewSet(viewsets.ModelViewSet):
 
 @login_required
 def sales_view(request):
-    return render(request, 'pos/sales.html', {})
+    sales = Sale.objects.all()
+    context = {
+        'sales' : sales,
+    }
+    return render(request, 'pos/sales.html', context)
 
 @login_required
 def new_sale_view(request):
@@ -54,7 +58,6 @@ def new_sale_view(request):
                 if index != current_index:              
                     products_list.append((sale, product_id, title, price, quantity))
                     current_index = index
-                print(products_list)
 
         current_index = None
                
@@ -74,6 +77,7 @@ def new_sale_view(request):
             'user': user,
             'products': Product.objects.all(),
         }
+
         return render(request, 'pos/new-sale.html', context)
     
     return render(request, 'pos/new-sale.html')
