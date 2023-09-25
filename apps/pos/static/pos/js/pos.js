@@ -6,8 +6,8 @@ const inoviceList = document.getElementById('inovice-list');
 const addProductButton = document.getElementById('add-product');
 const inoviceTotal = document.getElementById('inovice-total');
 const closeInvoiceButton = document.getElementById('close-inovice');
-
 const apiProdcutsUrl = document.getElementById('apiproducts').getAttribute('data-api-url');
+
 const userID = userElement ? userElement.value : null;
 
 const productsList = [];
@@ -78,7 +78,7 @@ fetch(apiProdcutsUrl)
             quantity: inputQuantity,
             price: inputPrice,
         });
-        
+
         addProduct(productTitle, priceField.value, quantityField.value, productTotal);
             
         //sum all products totals
