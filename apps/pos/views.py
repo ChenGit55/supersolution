@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import Sale, SaleItem
 from apps.products.models import Product
 from django.contrib.auth.decorators import login_required
@@ -38,7 +38,6 @@ def new_sale_view(request):
         user = request.user
         sale = Sale.objects.create(user=user)
         
-        # Processar os itens da venda
         product_fields = [key for key in request.POST if key.startswith('product-')]
         print(product_fields)
         
@@ -65,7 +64,6 @@ def new_sale_view(request):
         for sale, product_id, title, price, quantity in products_list:
             id = Product.objects.get(pk=product_id)
             
-            # Criar um item de venda vinculado à venda
             SaleItem.objects.create(
                 sale = sale,
                 product = id,

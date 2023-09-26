@@ -4,28 +4,28 @@
 {% block head %}{% endblock %}
 
 {% block body %}
-<h1>Nova Venda</h1>
+    <h1>Nova Venda</h1>
 
-<form action="." method="POST">{% csrf_token %}
-    <p>Vendedor: {{ user.username }}</p>
-    <span id="apiproducts" hidden="true" data-api-url="{% url 'api-products' %}"></span>
-    <select name="products-select" id="product-select"></select>
-    R$<input type="text" name="product-price" id="product-price" placeholder="Preço">
-    <input type="text" name="product-quantity" id="product-quantity" placeholder="Quantidade">
-    <button type="button" name="add-product" id="add-product">Adicionar produto</button>
-</form>
+    <form action="." method="POST">{% csrf_token %}
+        <p>Vendedor: {{ user.username }}</p>
+        <span id="apiproducts" hidden="true" data-api-url="{% url 'api-products' %}"></span>
+        <select name="products-select" id="product-select"></select>
+        R$<input type="text" name="product-price" id="product-price" placeholder="Preço">
+        <input type="text" name="product-quantity" id="product-quantity" placeholder="Quantidade">
+        <button type="button" name="add-product" id="add-product">Adicionar produto</button>
+    </form>
 
-<form action="." method="POST" id="new-sale-form">{% csrf_token %}
-    <input type="text" hidden="true" name="user" id="user" value="{{ user.username }}">    
+    <form action="." method="POST" id="new-sale-form">{% csrf_token %}
+        <input type="text" hidden="true" name="user" id="user" value="{{ user.username }}">    
 
-    <ul name="inovice-list" id="inovice-list"></ul>
+        <ul name="inovice-list" id="inovice-list"></ul>
 
-    Total: <span type="number" name="inovice-total" id="inovice-total"></span>
-    
-    <button type="button" name="close-inovice" id="close-inovice">Encerrar nota</button>
-    
-</form> 
-<script src="{% static 'pos/js/pos.js' %}"></script>
+        Total: <span type="number" name="inovice-total" id="inovice-total"></span>
+        
+        <button type="button" name="close-inovice" id="close-inovice">Encerrar nota</button>
+        
+    </form> 
+    <script src="{% static 'pos/js/pos.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
