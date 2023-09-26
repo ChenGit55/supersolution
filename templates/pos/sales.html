@@ -3,13 +3,36 @@
 {% block title %}{% endblock %}
 
 {% block header %}
+
+
 {% endblock %}
 
 {% block body %}
+
     <h1>Painel de Vendas</h1>
     <h5><a href="{% url 'new-sale' %}">Nova Venda</a></h5>
 
-    {% for sale in sales %}
-        {{ sale.id }} {{ sale.formatted_date }} {{ sale.user.username }}
-    {% endfor %}
+
+    <table style="width: 300%; border-collapse: separate; border-spacing: 10px; text-align: center;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th></th>
+                <th>Valor</th>
+                <th>Data</th>
+                <th>Vendedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.id }} </td>
+                <td>R$</td>
+                <td style="text-align: right;">{{ sale.calculate_total_sale }}</td>
+                <td>{{ sale.formatted_date }}</td>
+                <td>{{ sale.user.username }}</td>
+            </tr>                
+             {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
