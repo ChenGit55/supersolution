@@ -24,6 +24,10 @@ class Sale(models.Model):
             total_sale += float(total_item)
 
         return total_sale
+    
+    def formatted_total_sale(self):
+        f_total_sale = "{:,.2f}".format(self.calculate_total_sale()).replace(".",",")
+        return f_total_sale
 
     def save(self, *args, **kwargs):
         self.total = self.calculate_total_sale()

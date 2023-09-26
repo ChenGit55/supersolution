@@ -26,7 +26,7 @@
             {% for sale in sales %}
             <tr>
                 <td>{{ sale.id }} </td>
-                <td style="text-align: right;" >R$ {{ sale.calculate_total_sale|floatformat:2 }}</td>
+                <td style="text-align: right;" >R$ {{ sale.formatted_total_sale  }}</td>
                 <td>{{ sale.formatted_date }}</td>
                 <td>{{ sale.user.username }}</td>
             </tr>                
