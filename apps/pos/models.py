@@ -1,8 +1,6 @@
 from django.db import models
 from apps.accounts.models import CustomUser
 from apps.products.models import Product
-from decimal import Decimal
-import locale
 
 class Sale(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -17,21 +15,15 @@ class Sale(models.Model):
     
     def calculate_total_sale(self):
         sale_items = self.saleitem_set.all()
-        total_sale = Decimal('0.00')
+        total_sale = 0.0
 
         for sale_item in sale_items:
             total_item = sale_item.calculate_total_item()
-            sale_item.total = total_item
+            sale_item.total = float(total_item)
             sale_item.save()
-            total_sale += Decimal(total_item)
+            total_sale += float(total_item)
 
-        locale.setlocale(locale.LC_ALL, 'pt_BR.utf8')
-        formatted_total_sale = locale.currency(total_sale, grouping=True, symbol='')
-        locale.setlocale(locale.LC_ALL, '')
-
-        return formatted_total_sale.rjust(10)
-    
-  
+        return total_sale
 
     def save(self, *args, **kwargs):
         self.total = self.calculate_total_sale()
