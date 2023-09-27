@@ -1,4 +1,3 @@
-
 from django.urls import path, include
 from .views import sales_view, new_sale_view, SaleList, SaleViewSet, SaleItemList, SaleItemViewSet
 from rest_framework import routers

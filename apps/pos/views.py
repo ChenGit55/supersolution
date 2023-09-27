@@ -78,4 +78,4 @@ def new_sale_view(request):
 
         return render(request, 'pos/new-sale.html', context)
     
-    return render(request, 'pos/new-sale.html')
+    return render(request, 'pos/new-sale.html',{})
