@@ -25,7 +25,7 @@ class SaleItemViewSet(viewsets.ModelViewSet):
 
 @login_required
 def sales_view(request):
-    sales = Sale.objects.all()
+    sales = Sale.objects.all().order_by('-id')
     context = {
         'sales' : sales,
     }

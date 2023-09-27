@@ -2,9 +2,16 @@
 
 {% block title %}{% endblock %}
 
-{% block header %}
-
-
+{% block head %}
+<style>
+    /* Reverter a ordem das linhas da tabela */
+    table {
+      width: 300%;
+      border-collapse: separate;
+      border-spacing: 10px;
+      text-align: center;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
@@ -13,11 +20,11 @@
     <h5><a href="{% url 'new-sale' %}">Nova Venda</a></h5>
 
 
-    <table style="width: 300%; border-collapse: separate; border-spacing: 10px; text-align: center;">
+    <table class="reversed">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Valor</th>
+                <th style="text-align: right;">Valor</th>
                 <th>Data</th>
                 <th>Vendedor</th>
             </tr>
@@ -30,7 +37,7 @@
                 <td>{{ sale.formatted_date }}</td>
                 <td>{{ sale.user.username }}</td>
             </tr>                
-             {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
