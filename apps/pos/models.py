@@ -1,8 +1,11 @@
 from django.db import models
 from apps.accounts.models import CustomUser
 from apps.products.models import Product
+import pytz
+
 
 class Sale(models.Model):
+
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -11,6 +14,8 @@ class Sale(models.Model):
         return f'{self.id} - {self.formatted_date()} - {self.user.username}'
     
     def formatted_date(self):
+
+        self.date = self.date.astimezone(pytz.timezone('America/Sao_Paulo'))        
         return self.date.strftime('%d/%m/%Y - %H:%M')
     
     def calculate_total_sale(self):
