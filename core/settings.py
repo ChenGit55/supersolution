@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    #frameworks
     'rest_framework',
 
     #myapps
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     'apps.pos',
     'apps.clients',
     'apps.inventory',
+    'apps.stores',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'

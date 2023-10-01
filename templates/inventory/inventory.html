@@ -2,5 +2,14 @@
 {% block title %}Super Solution{% endblock %}
 {% block body %}
     <h1>Inventário</h1>
-    
+
+    Produtos
+    <ul>
+        
+        {% for item in all_items %}
+            <li>{{ item.product }} - Quantidade: {{ item.quantity }} - Loja: {{ item.store }}</li>
+        {% endfor %}
+
+    </ul>
+
 {% endblock %}
