@@ -2,6 +2,7 @@
 
 <form action="." method="post">{% csrf_token %}
     <p>{{ form.username.label }} {{ form.username }}</p>
+    <p>{{ form.store.label }} {{ form.store }}</p>
     <p>{{ form.password1.label }} {{ form.password1 }} {{ form.password1.help_text }}</p>
     <p>{{ form.password2.label }} {{ form.password2 }}</p>
     <p><input type="submit" value="Cadastrar"></p>
