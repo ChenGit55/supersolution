@@ -2,11 +2,13 @@ from django.db import models
 from apps.accounts.models import CustomUser
 from apps.products.models import Product
 import pytz
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 class Sale(models.Model):
 
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.CharField(max_length=50)
     date = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
@@ -54,3 +56,13 @@ class SaleItem(models.Model):
     def save(self, *args, **kwargs):
         self.total = self.calculate_total_item()
         super().save(*args, **kwargs)
+
+@receiver(pre_delete, sender=Product)
+def handle_deleted_product(sender, instance, **kwargs):
+    old_sales = SaleItem.objects.filter(product=instance)
+
+    # Para cada venda antiga, você pode tomar uma ação específica
+    for sale_item in old_sales:
+        # Neste exemplo, você pode definir o nome do produto para "Produto excluído"
+        sale_item.product.title = "Produto excluído"
+        sale_item.product.save()
