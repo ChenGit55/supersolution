@@ -1,13 +1,11 @@
 from django.contrib import admin
 from .models import SaleItem, Sale
 
-class SaleIrtem(admin.ModelAdmin):
-    list_display = ('sale')
+class SaleItemAdmin(admin.ModelAdmin):
+    list_display = ['sale','product', 'quantity', 'price', 'total']
 
-    def sale_field(self, obj):
-        return obj
-    sale_field.short_description = 'sale'
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ['formatted_total_sale', 'formatted_date', 'user']
 
-# Registre seus modelos no Django admin
-admin.site.register(SaleItem)
-admin.site.register(Sale)
+admin.site.register(SaleItem, SaleItemAdmin)
+admin.site.register(Sale, SaleAdmin)
