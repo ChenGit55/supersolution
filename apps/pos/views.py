@@ -36,6 +36,7 @@ def new_sale_view(request):
     
     if request.method == 'POST':
         user = request.user
+        store = request.user.store
         sale = Sale.objects.create(user=user)
         
         product_fields = [key for key in request.POST if key.startswith('product-')]
@@ -74,6 +75,7 @@ def new_sale_view(request):
         context = {
             'user': user,
             'products': Product.objects.all(),
+            'store': store,
         }
 
         return render(request, 'pos/new-sale.html', context)

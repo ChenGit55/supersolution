@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 class Sale(models.Model):
 
-    user = models.CharField(max_length=50)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
@@ -60,9 +60,15 @@ class SaleItem(models.Model):
 @receiver(pre_delete, sender=Product)
 def handle_deleted_product(sender, instance, **kwargs):
     old_sales = SaleItem.objects.filter(product=instance)
-
     # Para cada venda antiga, você pode tomar uma ação específica
     for sale_item in old_sales:
         # Neste exemplo, você pode definir o nome do produto para "Produto excluído"
         sale_item.product.title = "Produto excluído"
         sale_item.product.save()
+
+@receiver(pre_delete, sender=Sale)
+def handle_deleted_user(sender, instance, **kwargs):
+    old_sales = Sale.objects.filter(user=instance)
+    for user in old_sales:
+        user.username = "Usuário excluído"
+        user.username.save()
