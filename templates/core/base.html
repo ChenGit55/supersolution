@@ -11,40 +11,68 @@
     {% endblock %}  
 </head>
 <body style="display: flex;">
-    <nav style="height: 100vh; display: flex; flex-direction: column; padding: 20px; padding-top: 130px; width: 125px; background-color: aqua;">
-        <ul style="list-style-type: none;">
-            <a href="{% url 'home' %}">
-                <li style="padding-top: 5px;">
-                    Início
-                </li>
-            </a>
-            <a href="{% url 'sales' %}">
-                <li style="padding-top: 5px;">
-                Vendas
-                </li>
-            </a>
-            <a href="{% url 'products' %}">
-                <li style="padding-top: 5px;">
-                Produtos
-                </li>
-            </a>
-            <a href="{% url 'clients' %}">
-                <li style="padding-top: 5px;">
-                Clientes
-                </li>
-            </a>
-            <a href="{% url 'inventory' %}">
-                <li style="padding-top: 5px;">
-                Inventário
-                </li>
-            </a>
-            <a href="{% url 'logout' %}">
-                <li style="padding-top: 5px;">
-                Sair
-                </li>
-            </a>
-        </ul> 
-    </nav>
+    {% if user.is_authenticated %}
+        <nav style="height: 100vh; display: flex; flex-direction: column; padding-top: 130px; width: 125px; background-color: aqua;">
+            <ul style="list-style-type: none;">
+                <a href="{% url 'home' %}">
+                    <li style="padding-top: 5px;">
+                        Início
+                    </li>
+                </a>
+                <a href="{% url 'sales' %}">
+                    <li style="padding-top: 5px;">
+                    Vendas
+                    </li>
+                </a>
+                <a href="{% url 'products' %}">
+                    <li style="padding-top: 5px;">
+                    Produtos
+                    </li>
+                </a>
+                <a href="{% url 'clients' %}">
+                    <li style="padding-top: 5px;">
+                    Clientes
+                    </li>
+                </a>
+                <a href="{% url 'inventory' %}">
+                    <li style="padding-top: 5px;">
+                    Inventário
+                    </li>
+                </a>
+                <a href="{% url 'logout' %}">
+                    <li style="padding-top: 5px;">
+                    Sair
+                    </li>
+                </a>                
+            </ul> 
+        </nav>
+
+    {% else %}
+        <nav style="height: 100vh; display: flex; flex-direction: column; padding-top: 130px; width: 125px; background-color: aqua;">
+            <ul style="list-style-type: none;">
+                <a href="{% url 'manage' %}">
+                    <li style="padding-top: 5px;">
+                    Sistema
+                    </li>
+                </a>
+                <a href="{% url 'store-creation' %}">
+                    <li style="padding-top: 5px;">
+                    Criar Loja
+                    </li>
+                </a>
+                <a href="{% url 'signup' %}">
+                    <li style="padding-top: 5px;">
+                    Criar Usuário
+                    </li>
+                </a>                
+                <a href="{% url 'login' %}">
+                    <li style="padding-top: 5px;">
+                    Login
+                    </li>
+                </a>
+            </ul>
+        </nav>
+    {% endif %}
     <main style="padding: 20px;">        
         {% block body %}
         {% endblock %}

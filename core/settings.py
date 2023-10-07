@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from decouple import config
 
@@ -133,3 +132,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 }
+
+LOGIN_URL = '/manage/'

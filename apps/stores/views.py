@@ -1,9 +1,15 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .models import Store
 from .forms import StoreForm
 
+@login_required
 def store_view(request):
-    return render(request, 'stores/store.html', {})
+    store = Store.objects.all()
+    context = {
+        'store' : store
+    }
+    return render(request, 'stores/store.html', context)
 
 def create_store_view(request):
     if request.method == 'POST':

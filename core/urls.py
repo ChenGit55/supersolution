@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import home_view, start_view
+from .views import home_view, manage_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', start_view, name="start"),
-    path('home/', home_view, name="home"),
+    path('manage/', manage_view, name="manage"),
+    path('', home_view, name="home"),
     path('accounts/', include('apps.accounts.urls')),
     path('products/', include('apps.products.urls')),        
     path('pos/', include('apps.pos.urls')),

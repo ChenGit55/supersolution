@@ -1,8 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Super Solution{% endblock %}
+{% block body %}
 <h1>Criar Loja</h1>
 
 <form action="." method="POST">
     {% csrf_token %}
     {{ form.as_p}}
     <button type="submit">Criar</button>
-    <input type="submit" name="criar" id="criar">
-</form>
+</form>    
+{% endblock %}
+
