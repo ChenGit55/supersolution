@@ -2,5 +2,22 @@
 {% block title %}Super Solution{% endblock %}
 {% block body %}
     <h1>Sistema</h1>
+
+    {% if user.is_authenticated %}
+    {% else %}
+    <p>Primeiros passos para configurar seu sistema</p>
+    <ul>
+        <li>
+            Crie uma loja
+        </li>
+        <li>
+            Cadastre um usuário
+        </li>
+        <li>
+            Faça Login
+        </li>
+    </ul>
+
+    {% endif %}
     
 {% endblock %}
