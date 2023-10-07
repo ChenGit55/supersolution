@@ -1,27 +1,20 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import CustomUserCreationForm
-from apps.stores.models import Store
 
 def signup_view(request):
+    form = CustomUserCreationForm()    
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        stores = Store.objects.all()
-        if stores.exists() and form.is_valid():
-            msg = ''
+        
+        if form.is_valid():
             user = form.save(commit=False)
             user.is_staff = True
             user.save()
             return redirect('login')
-        else:
-            msg = "Precisa cadastrar uma loja primeiro!"
-    else:
-        msg = '' 
-        form = CustomUserCreationForm()
+
     context = {
          'form' : form,
-         'msg' : msg,
-         'stores' : stores,
     }
     return render(request, 'accounts/signup.html', context)
 
