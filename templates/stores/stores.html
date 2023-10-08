@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Super Solution{% endblock %}
+{% block body %}
+    <h1>Lojas</h1>
+    <h5><a href="{% url 'store-creation' %}">Nova Loja</a></h5>
+    <p></p>
+    <ul>
+        {% for store in stores %}
+         <li>{{ store }}</li>           
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -12,7 +12,7 @@
 </head>
 <body style="display: flex;">   
 
-    <nav style="height: 100vh; display: flex; flex-direction: column; padding-top: 130px; width: 125px; background-color: aqua;">            
+    <nav style="height: 100vh; display: flex; flex-direction: column; padding-top: 130px; width: 150px; background-color: aqua;">            
         <ul style="list-style-type: none;">
             {% if user.is_authenticated %}
                 <a href="{% url 'home' %}">
@@ -41,9 +41,9 @@
                     </li>
                 </a> 
                 {% if user.is_superuser %}  
-                    <a href="{% url 'store-creation' %}">
+                    <a href="{% url 'stores' %}">
                         <li style="padding-top: 5px;">
-                        Criar Loja
+                        Lojas
                         </li>
                     </a>
                     <a href="{% url 'inventory' %}">
@@ -65,7 +65,7 @@
                 </a>
                 <a href="{% url 'signup' %}">
                     <li style="padding-top: 5px;">
-                    Criar Usuário
+                    Novo Usuário
                     </li>
                 </a>                
                 <a href="{% url 'login' %}">

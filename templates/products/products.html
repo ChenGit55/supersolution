@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Super Solution{% endblock %}
 {% block body %}
-    <h1>Painel Produtos</h1>
+    <h1>Produtos</h1>
     <h5><a href="{% url 'new-product' %}">Cadastrar Produto</a></h5>
         <ul style="list-style-type: none;">
-            <h2>Produtos</h2>
             {% for product in products %}
             <a href="{% url 'product-detail' code=product.code %}"><li>{{ product.title }}</li> </a>       
             {% endfor %}
