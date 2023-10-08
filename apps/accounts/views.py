@@ -8,9 +8,7 @@ def signup_view(request):
         form = CustomUserCreationForm(request.POST)
         
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_staff = True
-            user.save()
+            user = form.save()
             return redirect('login')
 
     context = {
@@ -35,3 +33,10 @@ def logout_view(request):
         logout(request)
         redirect('login')
     return render(request, 'accounts/logout.html', {})
+
+def profile_view(request):
+    user = request.user
+    context = {
+        'user' : user
+    }
+    return render(request, 'accounts/profile.html', context)
