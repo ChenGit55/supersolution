@@ -3,7 +3,13 @@
 {% block body %}
     <h1>Perfil</h1>
     <h5>{{ user.username }}</h5>
+    <h6>{{ user.store }}</h6>
+    <hr>
     
-    {{ user.store }}
+    <form action="." method="POST">
+        {% csrf_token %}
+        Selecionar loja: {{ form.store }}
+        <button type="submit">Salvar</button>
+    </form>
     
 {% endblock %}
