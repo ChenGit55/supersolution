@@ -37,10 +37,9 @@ def new_sale_view(request):
     if request.method == 'POST':
         user = request.user
         store = request.user.store
-        sale = Sale.objects.create(user=user)
+        sale = Sale.objects.create(user=user, store=store)
         
         product_fields = [key for key in request.POST if key.startswith('product-')]
-        print(product_fields)
         
         products_list = []
         
