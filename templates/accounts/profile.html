@@ -5,11 +5,6 @@
     <h5>{{ user.username }}</h5>
     <h6>{{ user.store }}</h6>
     <hr>
-    
-    <form action="." method="POST">
-        {% csrf_token %}
-        Selecionar loja: {{ form.store }}
-        <button type="submit">Salvar</button>
-    </form>
+    <a href="{% url 'edit-profile' %}"><button>Editar Perfil</button></a>
     
 {% endblock %}

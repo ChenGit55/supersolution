@@ -35,15 +35,24 @@ def logout_view(request):
     return render(request, 'accounts/logout.html', {})
 
 def profile_view(request):
-    user = request.user    
-    if request.method == "POST":
+    user = request.user
+    context = {
+        'user' : user,
+    }
+    return render(request, 'accounts/profile.html', context)
+
+def edit_profile_view(request):
+    user = request.user
+    if request.method == "POST":       
         form = CustomUserChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-    else:
-        form = CustomUserChangeForm()
+            return redirect('profile')
+    else:        
+        initial_data = {'username': user.username}
+        form = CustomUserChangeForm(initial=initial_data, instance=user)
     context = {
         'user' : user,
         'form' : form
     }
-    return render(request, 'accounts/profile.html', context)
+    return render(request, 'accounts/edit-profile.html', context)
