@@ -3,10 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 def signup_view(request):
-    form = CustomUserCreationForm()    
+    form = CustomUserCreationForm()
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        
+
         if form.is_valid():
             user = form.save()
             return redirect('login')
@@ -25,7 +25,7 @@ def login_view(request):
             context = {'error': 'Invalid username or password!'}
             return render(request, 'accounts/login.html', context)
         login(request, user)
-        return redirect('home') 
+        return redirect('home')
     return render(request, 'accounts/login.html',{})
 
 def logout_view(request):
@@ -43,12 +43,12 @@ def profile_view(request):
 
 def edit_profile_view(request):
     user = request.user
-    if request.method == "POST":       
+    if request.method == "POST":
         form = CustomUserChangeForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('profile')
-    else:        
+    else:
         initial_data = {'username': user.username}
         form = CustomUserChangeForm(initial=initial_data, instance=user)
     context = {

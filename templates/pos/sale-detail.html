@@ -5,7 +5,7 @@
     <p>Data da Venda: {{ sale.date }}</p>
     <p>Usuário: {{ sale.user.username }}</p>
     <p>Total: {{ sale.total }}</p>
-    
+
     <h2>Produtos</h2>
 
     {{ sale.item.product.title }}
@@ -18,8 +18,8 @@
                 Preço unitário: {{ item.price }}
                 Total: {{ item.total }}
             </li>
-        {% endfor %}    
+        {% endfor %}
     </ul>
-    
+
     <a href="{% url 'sales' %}">Voltar para a lista de vendas</a>
 {% endblock %}

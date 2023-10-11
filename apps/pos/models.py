@@ -6,7 +6,6 @@ import pytz
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
-
 class Sale(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
@@ -16,12 +15,12 @@ class Sale(models.Model):
 
     def __str__(self):
         return f'{self.id} - {self.formatted_date()} - {self.user.username}'
-    
+
     def formatted_date(self):
 
-        self.date = self.date.astimezone(pytz.timezone('America/Sao_Paulo'))        
+        self.date = self.date.astimezone(pytz.timezone('America/Sao_Paulo'))
         return self.date.strftime('%d/%m/%Y - %H:%M')
-    
+
     def calculate_total_sale(self):
         sale_items = self.saleitem_set.all()
         total_sale = 0.0
@@ -33,14 +32,14 @@ class Sale(models.Model):
             total_sale += float(total_item)
 
         return total_sale
-    
+
     def formatted_total_sale(self):
         f_total_sale = "{:,.2f}".format(self.calculate_total_sale()).replace(".",",")
         return f_total_sale
 
     def save(self, *args, **kwargs):
         self.total = self.calculate_total_sale()
-        super().save(*args, **kwargs) 
+        super().save(*args, **kwargs)
 
 class SaleItem(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
@@ -54,7 +53,7 @@ class SaleItem(models.Model):
 
     def calculate_total_item(self):
         return self.quantity * self.price
-    
+
     def save(self, *args, **kwargs):
         self.total = self.calculate_total_item()
         super().save(*args, **kwargs)

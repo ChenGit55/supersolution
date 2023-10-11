@@ -6,7 +6,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .serializers import SaleSerializer, SaleItemSerializer
 from rest_framework import generics, viewsets
 
-
 class SaleList(LoginRequiredMixin, generics.ListCreateAPIView):
     queryset = Sale.objects.all()
     serializer_class = SaleSerializer
@@ -33,18 +32,18 @@ def sales_view(request):
 
 @login_required
 def new_sale_view(request):
-    
+
     if request.method == 'POST':
         user = request.user
         store = request.user.store
         sale = Sale.objects.create(user=user, store=store)
-        
+
         product_fields = [key for key in request.POST if key.startswith('product-')]
-        
+
         products_list = []
-        
+
         current_index = None
-        
+
         for field_name in product_fields:
             parts = field_name.split('-')
             if len(parts) == 3 and parts[1].isdigit():
@@ -54,16 +53,15 @@ def new_sale_view(request):
                 price = request.POST.get(f'product-{index + 1}-price')
                 quantity = request.POST.get(f'product-{index + 1}-quantity')
                 title = title or None
-                if index != current_index:              
+                if index != current_index:
                     products_list.append((sale, product_id, title, price, quantity))
                     current_index = index
 
         current_index = None
-               
-        
+
         for sale, product_id, title, price, quantity in products_list:
             id = Product.objects.get(pk=product_id)
-            
+
             SaleItem.objects.create(
                 sale = sale,
                 product = id,
@@ -78,5 +76,5 @@ def new_sale_view(request):
         }
 
         return render(request, 'pos/new-sale.html', context)
-    
+
     return render(request, 'pos/new-sale.html',{})

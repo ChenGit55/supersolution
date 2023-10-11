@@ -10,7 +10,6 @@ class ProductList(LoginRequiredMixin, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-
 @login_required
 def product_list_view(request, code=None):
     products = Product.objects.all()
@@ -23,7 +22,7 @@ def product_list_view(request, code=None):
 def new_product_view(request):
     if request.method == "POST":
         form = AddProductForm(request.POST)
-        if form.is_valid:            
+        if form.is_valid:
             form.save()
             return redirect ('products')
     else:

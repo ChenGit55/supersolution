@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Item 
+from .models import Item
 
 def inventory_view(request):
     all_items = Item.objects.all()

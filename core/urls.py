@@ -7,7 +7,7 @@ urlpatterns = [
     path('manage/', manage_view, name="manage"),
     path('', home_view, name="home"),
     path('accounts/', include('apps.accounts.urls')),
-    path('products/', include('apps.products.urls')),        
+    path('products/', include('apps.products.urls')),
     path('pos/', include('apps.pos.urls')),
     path('clients/', include('apps.clients.urls')),
     path('inventory/', include('apps.inventory.urls')),

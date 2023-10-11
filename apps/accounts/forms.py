@@ -7,7 +7,6 @@ class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label='Senha', widget=forms.PasswordInput, help_text='Senha de no mínimo 8 caracteres contendo ao menos uma letra e um número!')
     password2 = forms.CharField(label='Confirmação de senha', widget=forms.PasswordInput)
 
-
     class Meta:
         model = CustomUser
         fields = ('username',)

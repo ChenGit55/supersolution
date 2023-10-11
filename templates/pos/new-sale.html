@@ -16,17 +16,16 @@
     </form>
 
     <form action="." method="POST" id="new-sale-form">{% csrf_token %}
-        <input type="text" hidden="true" name="user" id="user" value="{{ user.username }}">    
+        <input type="text" hidden="true" name="user" id="user" value="{{ user.username }}">
 
         <ul name="inovice-list" id="inovice-list"></ul>
 
         Total: <span type="number" name="inovice-total" id="inovice-total"></span>
-        <p><button type="button" name="close-inovice" id="close-inovice">Encerrar nota</button></p>        
-        
-    </form> 
+        <p><button type="button" name="close-inovice" id="close-inovice">Encerrar nota</button></p>
+
+    </form>
     <script src="{% static 'pos/js/pos.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
 {% endblock %}
-

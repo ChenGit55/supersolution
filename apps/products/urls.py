@@ -1,4 +1,3 @@
-
 from django.urls import path
 from .views import product_list_view, new_product_view, product_detail_view, ProductList
 

@@ -3,7 +3,7 @@ from .views import sales_view, new_sale_view, SaleList, SaleViewSet, SaleItemLis
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'sales', SaleViewSet) 
+router.register(r'sales', SaleViewSet)
 router.register(r'sales-items', SaleItemViewSet)
 
 urlpatterns = [

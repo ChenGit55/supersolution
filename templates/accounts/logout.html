@@ -6,7 +6,7 @@
     <form action='' method='POST'> {% csrf_token %}
         <p>Tem certeza que quer sair?</p>
         <a href="{% url 'home' %}"><button type="submit">Sim, quero sair</button></a>
-        <a href="{% url 'home' %}"></a>							
+        <a href="{% url 'home' %}"></a>
     </form>
 {% else %}
     <h2>voce foi/está deslogado</h2>
@@ -14,5 +14,5 @@
     <a href="{% url 'login' %}"><button>Entrar</button></a>
     <a href="{% url 'signup' %}"><button>Cadastrar</button></a>
 {% endif %}
-    
+
 {% endblock %}
