@@ -39,6 +39,12 @@ function addProduct(productTitle, price, quantity, productTotal) {
   inoviceList.appendChild(inoviceProduct);
 }
 
+const emptyOption = document.createElement('option');
+emptyOption.text = '-selecione o produto-';
+emptyOption.value = '-';
+productSelect.appendChild(emptyOption);
+
+
 // Fetch products from the API
 fetch(apiProdcutsUrl)
   .then(response => {
@@ -55,14 +61,15 @@ fetch(apiProdcutsUrl)
       option.value = product.price;
       option.setAttribute('data-id', product.id);
       productSelect.appendChild(option);
-    });   
+    });
 
     addProductButton.addEventListener('click', () => {
       const selectedProductIndex = productSelect.selectedIndex;
       if (
         Boolean(priceField.value) &&
         Boolean(quantityField.value) &&
-        selectedProductIndex !== -1
+        selectedProductIndex !== -1 &&
+        option.text !== '-selecione o produto-'
       ) {
         const productID = productSelect.options[selectedProductIndex].getAttribute('data-id');
         const productTitle = productSelect.options[productSelect.selectedIndex].text;
@@ -80,7 +87,7 @@ fetch(apiProdcutsUrl)
         });
 
         addProduct(productTitle, priceField.value, quantityField.value, productTotal);
-            
+
         //sum all products totals
         currentTotal += productTotal;
         inoviceTotal.textContent = fCurrency(currentTotal);
@@ -106,7 +113,7 @@ closeInvoiceButton.addEventListener('click', () => {
       inputID.name = `product-${index+1}-id`;
       inputID.value = product.id;
       salesForm.appendChild(inputID);
-      
+
       const inputProduct = document.createElement('input');
       inputProduct.type = 'hidden';
       inputProduct.name = `product-${index + 1}-title`;
@@ -134,6 +141,11 @@ closeInvoiceButton.addEventListener('click', () => {
  //shows up the default price when change the selected product
  productSelect.addEventListener('change', () => {
   const selectedPrice = productSelect.options[productSelect.selectedIndex].value;
+  const selectText = productSelect.options[productSelect.selectedIndex].text;
   priceField.value = selectedPrice.replace('.', ',');
-  quantityField.value = 1;
-}); 
+  if (selectText === '-selecione o produto-') {
+    quantityField.value = '-';
+  } else {
+    quantityField.value = 1;
+  }
+});
