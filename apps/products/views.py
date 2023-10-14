@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import AddProductForm
 from .models import Product
+from apps.inventory.models import Item
+from apps.stores.models import Store
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .serializers import ProductSerializer
@@ -23,7 +25,14 @@ def new_product_view(request):
     if request.method == "POST":
         form = AddProductForm(request.POST)
         if form.is_valid:
-            form.save()
+            stores = Store.objects.all()
+            product = form.save()
+            for store in stores:
+                Item.objects.create(
+                    product = product,
+                    store = store,
+                    quantity = 0,
+                )
             return redirect ('products')
     else:
         form = AddProductForm()
