@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from .models import Sale, SaleItem
-from apps.inventory.models import Item
 from apps.products.models import Product
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -62,7 +61,6 @@ def new_sale_view(request):
 
         for sale, product_id, title, price, quantity in products_list:
             id = Product.objects.get(pk=product_id)
-            stock_item = Item.objects.get(product=id, store=store)
 
             SaleItem.objects.create(
                 sale = sale,
@@ -70,9 +68,6 @@ def new_sale_view(request):
                 quantity = int(quantity),
                 price = float(price),
             )
-            stock_quantity = int(stock_item.quantity) - int(quantity)
-            stock_item.quantity = stock_quantity
-            stock_item.save()
 
         context = {
             'user': user,

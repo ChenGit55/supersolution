@@ -69,7 +69,7 @@ fetch(apiProdcutsUrl)
         Boolean(priceField.value) &&
         Boolean(quantityField.value) &&
         selectedProductIndex !== -1 &&
-        option.text !== '-selecione o produto-'
+        productSelect.options[productSelect.selectedIndex].text !== '-selecione o produto-'
       ) {
         const productID = productSelect.options[selectedProductIndex].getAttribute('data-id');
         const productTitle = productSelect.options[productSelect.selectedIndex].text;
