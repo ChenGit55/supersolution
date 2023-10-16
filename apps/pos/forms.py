@@ -8,7 +8,6 @@ class SaleForm(forms.ModelForm):
         fields = ()
 
 class SaleItemForm(forms.ModelForm):
-    product = forms.ModelChoiceField(queryset=Product.objects.all())
     class Meta:
         model = SaleItem
         fields = ['product', 'quantity', 'price']

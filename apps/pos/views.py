@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Sale, SaleItem
+from .forms import SaleItemForm
 from apps.products.models import Product
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -32,49 +33,32 @@ def sales_view(request):
 
 @login_required
 def new_sale_view(request):
+    form = SaleItemForm()
+    user = request.user
+    store = request.user.store
 
     if request.method == 'POST':
-        user = request.user
-        store = request.user.store
         sale = Sale.objects.create(user=user, store=store)
+        form = SaleItemForm(request.POST)
 
-        product_fields = [key for key in request.POST if key.startswith('product-')]
+        product_ids = request.POST.get('product_ids')
+        product_prices = request.POST.get('product_prices')
+        quantities = request.POST.get('quantities')
 
-        products_list = []
+        product_ids = product_ids.split(',')
+        product_prices = product_prices.split(',')
+        quantities = quantities.split(',')
 
-        current_index = None
-
-        for field_name in product_fields:
-            parts = field_name.split('-')
-            if len(parts) == 3 and parts[1].isdigit():
-                index = int(parts[1]) - 1
-                product_id = request.POST.get(f'product-{index+1}-id')
-                title = request.POST.get(f'product-{index+1}-title')
-                price = request.POST.get(f'product-{index + 1}-price')
-                quantity = request.POST.get(f'product-{index + 1}-quantity')
-                title = title or None
-                if index != current_index:
-                    products_list.append((sale, product_id, title, price, quantity))
-                    current_index = index
-
-        current_index = None
-
-        for sale, product_id, title, price, quantity in products_list:
-            id = Product.objects.get(pk=product_id)
-
+        for index in range(len(product_ids)):
+            id = Product.objects.get(pk=product_ids[index])
             SaleItem.objects.create(
                 sale = sale,
                 product = id,
-                quantity = int(quantity),
-                price = float(price),
+                price = float(product_prices[index]),
+                quantity = int(quantities[index]),
             )
 
-        context = {
-            'user': user,
-            'products': Product.objects.all(),
-            'store': store,
-        }
-
-        return render(request, 'pos/new-sale.html', context)
-
-    return render(request, 'pos/new-sale.html',{})
+    context = {
+        'form' : form,
+    }
+    return render(request, 'pos/new-sale.html', context)

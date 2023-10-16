@@ -13,9 +13,6 @@ class Sale(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
-    def __str__(self):
-        return f'{self.id} - {self.formatted_date()} - {self.user.username}'
-
     def formatted_date(self):
 
         self.date = self.date.astimezone(pytz.timezone('America/Sao_Paulo'))
@@ -67,7 +64,7 @@ def handle_deleted_product(sender, instance, **kwargs):
 
 @receiver(pre_delete, sender=Sale)
 def handle_deleted_user(sender, instance, **kwargs):
-    old_sales = Sale.objects.filter(user=instance)
-    for user in old_sales:
-        user.username = "Usuário excluído"
-        user.username.save()
+    old_sales = Sale.objects.filter(id=instance.id)
+    for sale in old_sales:
+        sale.user = None
+        sale.save()
