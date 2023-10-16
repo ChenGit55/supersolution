@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}{% endblock %}
-{% block head %}{% endblock %}
+{% block head %}
+<style>
+    th {
+        padding-left: 15px;
+    }
+    td {
+        padding-left: 15px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
 {% block body %}
     <h1>Nova Venda</h1>
 
@@ -21,10 +31,10 @@
     <table>
         <thead>
             <tr>
-                <th style="padding-left: 15px">PRODUTO</th>
-                <th style="padding-left: 15px">PREÇO</th>
-                <th style="padding-left: 15px">QUANTIDADE</th>
-                <th style="padding-left: 15px">TOTAL</th>
+                <th>PRODUTO</th>
+                <th>PREÇO</th>
+                <th>QUANTIDADE</th>
+                <th>TOTAL</th>
             </tr>
         </thead>
         <tbody id="inovice"></tbody>
