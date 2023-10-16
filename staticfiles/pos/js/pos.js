@@ -1,139 +1,120 @@
-const userElement = document.getElementById('user');
-const productSelect = document.getElementById('product-select');
-const priceField = document.getElementById('product-price');
-const quantityField = document.getElementById('product-quantity');
-const inoviceList = document.getElementById('inovice-list');
-const addProductButton = document.getElementById('add-product');
-const inoviceTotal = document.getElementById('inovice-total');
-const closeInvoiceButton = document.getElementById('close-inovice');
-const apiProdcutsUrl = document.getElementById('apiproducts').getAttribute('data-api-url');
-
-const userID = userElement ? userElement.value : null;
-
-const productsList = [];
+var productSelect = document.getElementById('product-select');
+var priceField = document.getElementById('product-price');
+var quantityField = document.getElementById('product-quantity');
+var addButton = document.getElementById('add-product-button');
+var closeInovice = document.getElementById('close-inovice')
+var inovice = document.getElementById('inovice');
+var inoviceTotal = document.getElementById('inovice-total');
 let currentTotal = 0;
 
-// Currency format function
+
 function fCurrency(value) {
-  if (typeof value === 'string') {
-    value = value.replace(',', '.').replace(/[^0-9.]/g, '');
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL'}).format(value);
-  } else {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL'}).format(value);
-  }
-}
-
-// function to get the CSRF token
-function getCSRFToken() {
-  const cookieValue = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('csrftoken='))
-    .split('=')[1];
-  return cookieValue;
-}
-
-// shows up the product to client
-function addProduct(productTitle, price, quantity, productTotal) {
-  const inoviceProduct = document.createElement('li');
-  inoviceProduct.textContent = `${productTitle} - ${fCurrency(price)} x ${quantity} - Total: ${fCurrency(productTotal)}`;
-  inoviceList.appendChild(inoviceProduct);
-}
-
-// Fetch products from the API
-fetch(apiProdcutsUrl)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('API REQUEST ERROR!');
+    if (typeof value === 'string') {
+      value = value.replace(',', '.').replace(/[^0-9.]/g, '');
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL'}).format(value);
+    } else {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL'}).format(value);
     }
-    return response.json();
-  })
-  .then(data => {
-    //select menu with API data
-    data.forEach(product => {
-      const option = document.createElement('option');
-      option.text = product.title;
-      option.value = product.price;
-      option.setAttribute('data-id', product.id);
-      productSelect.appendChild(option);
-    });   
+}
 
-    addProductButton.addEventListener('click', () => {
-      const selectedProductIndex = productSelect.selectedIndex;
-      if (
-        Boolean(priceField.value) &&
-        Boolean(quantityField.value) &&
-        selectedProductIndex !== -1
-      ) {
-        const productID = productSelect.options[selectedProductIndex].getAttribute('data-id');
-        const productTitle = productSelect.options[productSelect.selectedIndex].text;
-        const inputPrice = parseFloat(priceField.value.replace(',', '.'));
-        const inputQuantity = quantityField.value;
-        const productTotal = quantityField.value * parseFloat(priceField.value.replace(',', '.'));
+function cFloat(value) {
+    newValue = parseFloat(value.replace(/[^\d,-]/g, '').replace(',', '.'));
+    return newValue;
+}
 
-        // Criar campos dinâmicos com nomes únicos
+function inoviceData(productID,  productPrice, quantity) {
 
-        productsList.push({
-            id: productID,
-            product: productTitle,
-            quantity: inputQuantity,
-            price: inputPrice,
-        });
+    var data = {
+        product_id: productID,
+        product_price: productPrice,
+        quantity: quantity
+    };
 
-        addProduct(productTitle, priceField.value, quantityField.value, productTotal);
-            
-        //sum all products totals
-        currentTotal += productTotal;
-        inoviceTotal.textContent = fCurrency(currentTotal);
+    fetch("{% url 'new-sale' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1], // Obtenha o token CSRF
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
 
-        priceField.value = '';
-        quantityField.value = '';
-      }
+    })
+    .catch(error => {
+        console.error('Erro ao enviar dados para o Django:', error);
     });
-  })
-  .catch(error => {
-    console.error('Erro: ' + error.message);
-  });
+}
 
-// Close invoice button click event
-closeInvoiceButton.addEventListener('click', () => {
-  if (productsList.length > 0) {
-    const salesForm = document.getElementById('new-sale-form');
-    document.getElementById('user').value = userID;
-    productsList.forEach((product, index) => {
+function updateHiddenFields() {
+    var productIds = [];
+    var productPrices = [];
+    var quantities = [];
 
-      const inputID = document.createElement('input');
-      inputID.type = 'hidden';
-      inputID.name = `product-${index+1}-id`;
-      inputID.value = product.id;
-      salesForm.appendChild(inputID);
-      
-      const inputProduct = document.createElement('input');
-      inputProduct.type = 'hidden';
-      inputProduct.name = `product-${index + 1}-title`;
-      inputProduct.value = product.product;
-      salesForm.appendChild(inputProduct);
+    var rows = inovice.getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName('td');
+        productIds.push(cells[0].getAttribute('cell-id'));
+        productPrices.push(cells[1].getAttribute('cell-price'));
+        quantities.push(cells[2].getAttribute('cell-quantity'));
+    }
 
-      const inputPrice = document.createElement('input');
-      inputPrice.type = 'hidden';
-      inputPrice.name = `product-${index + 1}-price`;
-      inputPrice.value = product.price;
-      salesForm.appendChild(inputPrice);
+    document.getElementById('product-ids').value = productIds.join(',');
+    document.getElementById('product-prices').value = productPrices.join(',');
+    document.getElementById('quantities').value = quantities.join(',');
+}
 
-      const inputQuantity = document.createElement('input');
-      inputQuantity.type = 'hidden';
-      inputQuantity.name = `product-${index + 1}-quantity`;
-      inputQuantity.value = product.quantity;
-      salesForm.appendChild(inputQuantity);
+document.addEventListener("DOMContentLoaded", function () {
+
+    productSelect.addEventListener('change', function () {
+        var product = productSelect.options[productSelect.selectedIndex];
+        var selectedPrice = product.getAttribute('data-price');
+        priceField.value = fCurrency(selectedPrice);
+        if ( quantityField.value === '' ) {
+            quantityField.value = 1
+        }
     });
-    salesForm.submit()
-  } else {
-    console.error('Nenhum produto selecionado. Selecione pelo menos um produto antes de finalizar a venda.');
-  }
+
+    addButton.addEventListener("click", function (event) {
+        var product = productSelect.options[productSelect.selectedIndex];
+        var productID = product.getAttribute('value');
+
+        if ( product.text !== '' && quantityField.value > 0 && cFloat(priceField.value) > 0 ) {
+
+            const inoviceRow = inovice.insertRow();
+            const productCell = inoviceRow.insertCell(0);
+            const priceCell = inoviceRow.insertCell(1);
+            const quantityCell = inoviceRow.insertCell(2);
+            const totalCell = inoviceRow.insertCell(3);
+
+            productCell.textContent = product.text;
+            priceCell.textContent = priceField.value;
+            quantityCell.textContent = quantityField.value;
+            totalCell.textContent = fCurrency(cFloat(priceField.value)*quantityField.value);
+
+            productCell.setAttribute(`cell-id`, productID);
+            priceCell.setAttribute(`cell-price`, cFloat(priceCell.textContent));
+            quantityCell.setAttribute(`cell-quantity`, cFloat(quantityCell.textContent));
+            totalCell.setAttribute(`cell-total`, cFloat(totalCell.textContent));
+
+            currentTotal += cFloat(totalCell.textContent);
+            inoviceTotal.textContent = fCurrency(currentTotal);
+        } else {
+            console.log('dados inválidos');
+        }
+    });
+
+    closeInovice.addEventListener("click", function (event) {
+        var product = productSelect.options[productSelect.selectedIndex];
+        var productID = product.getAttribute('value');
+        const rows = inovice.getElementsByTagName("tr");
+        if (rows.length > 0) {
+            inoviceData(productID, cFloat(priceField.value), quantityField.value);
+            updateHiddenFields();
+        } else {
+            console.log('selecione um produto');
+            event.preventDefault();
+        }
+    })
+
 });
-
- //shows up the default price when change the selected product
- productSelect.addEventListener('change', () => {
-  const selectedPrice = productSelect.options[productSelect.selectedIndex].value;
-  priceField.value = selectedPrice.replace('.', ',');
-  quantityField.value = 1;
-}); 
