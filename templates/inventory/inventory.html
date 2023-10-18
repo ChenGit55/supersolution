@@ -3,17 +3,4 @@
 {% block body %}
     <h1>Inventário</h1>
     <h5>Produtos</h5>
-
-    {% for stock in stocks %}
-        {{ stock }}
-    {% endfor %}
-
-    <ul  style="list-style-type: none;">
-
-        {% for item in all_items %}
-            <li>{{ item.product }} - Quantidade: {{ item.quantity }} - Loja: {{ item.store }}</li>
-        {% endfor %}
-
-    </ul>
-
 {% endblock %}
