@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Super Solution{% endblock %}
+{% block body %}
+    <h1>Inventário</h1>
+    <h5>Adicionar Produtos</h5>
+    <form action="add-product" method="POST">{% csrf_token %}
+        {{ form.product }}
+        {{ form.quantity }}
+        <select name="location" id="location">
+            <option value="">Não definido</option>
+            {% for store in stores %}
+                <option value="{{ store }}">{{ store }}</option>
+            {% endfor %}
+            {% for stock in stocks %}
+                <option value="{{ stock }}">{{ stock }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Adicionar">
+    </form>
+    {% for item in items %}
+      <p>{{ item.product }} - {{ item.quantity }} - {{ item.location }}</p>
+    {% endfor %}
+{% endblock %}

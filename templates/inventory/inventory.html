@@ -2,5 +2,8 @@
 {% block title %}Super Solution{% endblock %}
 {% block body %}
     <h1>Inventário</h1>
-    <h5>Produtos</h5>
+    <a href="{% url 'add-product' %}"><h5>Adicionar produtos</h5></a>
+    {% for item in items %}
+      <p>{{ item.product }} - {{ item.quantity}} - {{ item.location }}</p>
+    {% endfor %}
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from apps.stores.models import Store
 from .models import Item, Stock
@@ -6,24 +6,43 @@ from .forms import ItemForm
 
 @login_required
 def inventory_view(request):
-    all_items = Item.objects.all()
-    stores = Store.objects.all()
-    stocks = Stock.objects.all()
-    form = ItemForm(request.POST)
-
-    items_by_store = {}
-
-    for store in stores:
-        items = Item.objects.filter(store=store)
-        items_by_store[store] = items
-
-    if request.method == 'POST':
-        form.save()
+    items = Item.objects.all()
     context = {
-        'all_items' : all_items,
-        'stores' : stores,
-        'items_by_store' : items_by_store,
-        'stocks' : stocks,
-        'form' : form,
+        'items' : items,
     }
     return render(request, 'inventory/inventory.html', context)
+
+@login_required
+def add_product_view(request):
+    form = ItemForm()
+    items = Item.objects.all()
+    stores = Store.objects.all()
+    stocks = Stock.objects.all()
+
+    if request.method == 'POST':
+        form = ItemForm(request.POST)
+
+        if form.is_valid():
+            product_id = request.POST.get('product')
+            location = request.POST.get('location')
+            if location == "" :
+                location = "Loja/Estoque, não definido"
+            quantity = int(request.POST['quantity'])
+            existing_item = Item.objects.filter(product__id=product_id, location=location).first()
+
+            if existing_item:
+                existing_item.quantity += quantity
+                existing_item.save()
+            else:
+                Item.objects.create(product_id=product_id, location=location, quantity=quantity)
+
+        return redirect('add-product')
+
+
+    context = {
+        'form' : form,
+        'items' : items,
+        'stores' : stores,
+        'stocks' : stocks,
+    }
+    return render(request, 'inventory/add-product.html', context)

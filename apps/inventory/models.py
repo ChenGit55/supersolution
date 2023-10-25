@@ -3,9 +3,6 @@ from apps.products.models import Product
 from apps.stores.models import Store
 
 
-
-
-
 class Stock(models.Model):
 
     name = models.CharField(max_length=110)
@@ -14,14 +11,8 @@ class Stock(models.Model):
         return self.name
 
 
-class Location(models.Model):
-
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, null=True, blank=True)
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE, null=True, blank=True)
-
-
 class Item(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
+    location = models.CharField(max_length=50, null=True, blank=True, default="Loja/Estoque, não definido")
     quantity = models.IntegerField()
