@@ -46,3 +46,18 @@ def add_product_view(request):
         'stocks' : stocks,
     }
     return render(request, 'inventory/add-product.html', context)
+
+def transfer_product_view(request):
+    items = Item.objects.all()
+    stores = Store.objects.all()
+    stocks = Stock.objects.all()
+    if request.method == 'POST':
+        location = request.POST.get('location')
+        location_items = Item.objects.filter(location=location).all()
+        print(location_items)
+    context = {
+        'items' : items,
+        'stores' : stores,
+        'stocks' : stocks,
+    }
+    return render(request, 'inventory/transfer-product.html', context)

@@ -3,11 +3,9 @@
 {% block body %}
     <h1>Inventário</h1>
     <h5><a href="{% url 'add-product' %}">Adicionar produtos</a> | <a href="{% url 'transfer-product' %}">Transfererir produtos</a></h5>
-    <form action="add-product" method="POST">{% csrf_token %}
-        {{ form.product }}
-        {{ form.quantity }}
+
+    <form action="transfer-product" method="POST"> {% csrf_token %}
         <select name="location" id="location">
-            <option value="">Não definido</option>
             {% for store in stores %}
                 <option value="{{ store }}">{{ store }}</option>
             {% endfor %}
@@ -15,9 +13,6 @@
                 <option value="{{ stock }}">{{ stock }}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Adicionar">
+        <input type="submit" name="" id="">
     </form>
-    {% for item in items %}
-      <p>{{ item.product }} - {{ item.quantity }} - {{ item.location }}</p>
-    {% endfor %}
 {% endblock %}

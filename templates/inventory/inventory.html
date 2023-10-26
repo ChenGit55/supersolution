@@ -2,7 +2,7 @@
 {% block title %}Super Solution{% endblock %}
 {% block body %}
     <h1>Inventário</h1>
-    <a href="{% url 'add-product' %}"><h5>Adicionar produtos</h5></a>
+    <h5><a href="{% url 'add-product' %}">Adicionar produtos</a> | <a href="{% url 'transfer-product' %}">Transfererir produtos</a></h5>
     {% for item in items %}
       <p>{{ item.product }} - {{ item.quantity}} - {{ item.location }}</p>
     {% endfor %}
