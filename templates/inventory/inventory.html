@@ -1,9 +1,63 @@
 {% extends 'base.html' %}
 {% block title %}Super Solution{% endblock %}
+{% block head %}
+  <style>
+    th {
+        padding-left: 15px;
+    }
+    td {
+        padding-left: 15px;
+        text-align: center;
+    }
+  </style>
+{% endblock %}
 {% block body %}
-    <h1>Inventário</h1>
-    <h5><a href="{% url 'add-product' %}">Adicionar produtos</a> | <a href="{% url 'transfer-product' %}">Transfererir produtos</a></h5>
-    {% for item in items %}
-      <p>{{ item.product }} - {{ item.quantity}} - {{ item.location }}</p>
-    {% endfor %}
+  <h1>Inventário</h1>
+  <h5><a href="{% url 'add-product' %}">Adicionar produtos</a></h5>
+  <form action="." method="POST"> {% csrf_token %}
+    <select name="location" id="location">
+      <option value="">Loja/Estoque não definido</option>
+      {% for store in stores %}
+          {% if current_location == store %}
+            <option value="{{ store }}" selected>{{ store }} </option>
+          {% else %}
+            <option value="{{ store }}">{{ store }} </option>
+          {% endif %}
+      {% endfor %}
+      {% for stock in stocks %}
+          <option value="{{ stock }}">{{ stock }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" name="" id="submit-location">
+  </form>
+  <hr>
+
+  {{ current_location }}
+
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Produto
+          </th>
+          <th>
+            Quantidade
+          </th>
+        </tr>
+      </thead>
+      {% if location_items %}
+        <tbody>
+          {% for item in location_items %}
+            <tr>
+              <td>
+                {{ item.product }}
+              </td>
+              <td>
+                {{ item.quantity }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      {% endif %}
+    </table>
 {% endblock %}

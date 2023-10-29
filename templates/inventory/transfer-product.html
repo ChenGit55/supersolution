@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Super Solution{% endblock %}
 {% block body %}
     <h1>Inventário</h1>
-    <h5><a href="{% url 'add-product' %}">Adicionar produtos</a> | <a href="{% url 'transfer-product' %}">Transfererir produtos</a></h5>
-
     <form action="transfer-product" method="POST"> {% csrf_token %}
         <select name="location" id="location">
             {% for store in stores %}
@@ -13,6 +12,10 @@
                 <option value="{{ stock }}">{{ stock }}</option>
             {% endfor %}
         </select>
-        <input type="submit" name="" id="">
+        <input type="submit" name="" id="submit-location">
     </form>
+    {% for item in location_items %}
+        {{ item.product }} - {{ item.quantity }}
+    {% endfor %}
+    <script src="{% static 'inventory/js/inventory.js' %}"></script>
 {% endblock %}

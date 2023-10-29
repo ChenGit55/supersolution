@@ -2,7 +2,7 @@
 {% block title %}Super Solution{% endblock %}
 {% block body %}
     <h1>Inventário</h1>
-    <h5><a href="{% url 'add-product' %}">Adicionar produtos</a> | <a href="{% url 'transfer-product' %}">Transfererir produtos</a></h5>
+    <h5><a href="{% url 'inventory' %}">Voltar para o inventário</a></h5>
     <form action="add-product" method="POST">{% csrf_token %}
         {{ form.product }}
         {{ form.quantity }}
@@ -17,7 +17,4 @@
         </select>
         <input type="submit" value="Adicionar">
     </form>
-    {% for item in items %}
-      <p>{{ item.product }} - {{ item.quantity }} - {{ item.location }}</p>
-    {% endfor %}
 {% endblock %}
