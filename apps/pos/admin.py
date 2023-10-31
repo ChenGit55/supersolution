@@ -5,7 +5,7 @@ class SaleItemAdmin(admin.ModelAdmin):
     list_display = ['sale','product', 'quantity', 'price', 'total']
 
 class SaleAdmin(admin.ModelAdmin):
-    list_display = ['formatted_total_sale', 'formatted_date', 'user']
+    list_display = ['formatted_total_sale', 'user']
 
 admin.site.register(SaleItem, SaleItemAdmin)
 admin.site.register(Sale, SaleAdmin)

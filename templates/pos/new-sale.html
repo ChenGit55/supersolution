@@ -17,9 +17,10 @@
 {% endblock %}
 {% block body %}
     <h1>Nova Venda</h1>
+    <p>Vendedor: {{ user.username }}</p>
+    <p>Loja: {{ user.store }}</p>
 
     <form action="." method="POST">{% csrf_token %}
-        <p>Vendedor: {{ user.username }} - Loja: {{ user.store }}</p>
 
         <select name="product-select" id="product-select">
             <option value="">---------</option>

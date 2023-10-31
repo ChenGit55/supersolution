@@ -17,10 +17,39 @@
 {% block body %}
 
     <h1>Painel de Vendas</h1>
+    {% now "d/m/Y H:i" %}
+    <form action="." method="POST">{% csrf_token %}
+        {{ date_form.date }}
+        <input type="submit" value="Selecionar">
+    </form>
     <h5><a href="{% url 'new-sale' %}">Nova Venda</a></h5>
 
 
-    <table class="reversed">
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th style="text-align: right;">Valor</th>
+                <th>Hora</th>
+                <th>Vendedor</th>
+                <th>Loja</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in selected_date_sales %}
+            <tr>
+                <td>{{ sale.id }} </td>
+                <td style="text-align: right;" >R$ {{ sale.formatted_total_sale  }}</td>
+                <td>{{ sale.date|date:"H:i" }}</td>
+                <td>{{ sale.user }}</td>
+                <td>{{ sale.store }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -35,11 +64,12 @@
             <tr>
                 <td>{{ sale.id }} </td>
                 <td style="text-align: right;" >R$ {{ sale.formatted_total_sale  }}</td>
-                <td>{{ sale.formatted_date }}</td>
+                <td>{{ sale.formatted_date }} - {{sale.date|date:"Y"}}</td>
                 <td>{{ sale.user }}</td>
                 <td>{{ sale.store }}</td>
             </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table> -->
+
 {% endblock %}
