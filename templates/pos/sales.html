@@ -4,6 +4,9 @@
 
 {% block head %}
   <style>
+    #sales-table {
+        text-align: center;
+    }
     #sales-table th {
         padding-left: 25px;
     }
@@ -23,9 +26,12 @@
         <input type="text" id="datepicker" name="date" value="{% now  'd/m/Y' %}">
         <input type="submit" name="submit" id="submit" value="selecionar">
     </form>
-
     <hr>
-    <div style="text-align: center; font-weight: bold; color: red;">{{ selected_date }}</div>
+    <div style="text-align: center; font-weight: bold;">
+        Vendedor: {{ user }} | Loja: {{ user.store }}
+    </div>
+    <hr>
+    <div style="text-align: end; font-weight: bold">{{ selected_date }}</div>
 
     <table id="sales-table">
         <thead>

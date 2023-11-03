@@ -9,7 +9,7 @@ from rest_framework import generics, viewsets
 from django.utils import timezone
 from datetime import datetime
 
-now = timezone.now()
+now = timezone.now().astimezone(timezone.get_current_timezone())
 today = now.strftime("%d/%m/%Y")
 
 class SaleList(LoginRequiredMixin, generics.ListCreateAPIView):
@@ -33,7 +33,7 @@ def sales_view(request):
     sales = Sale.objects.all().order_by('-id')
     form = DateForm()
     selected_date = today
-    print(today, timezone.now())
+    print(now)
     selected_date_sales = Sale.objects.filter(date__date=now)
     if request.method == 'POST':
         selected_date = request.POST.get('date')
