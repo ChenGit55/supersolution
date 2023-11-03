@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from .models import Sale, SaleItem
-from .forms import SaleItemForm, SaleForm
+from .forms import SaleItemForm, DateForm
 from apps.products.models import Product
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .serializers import SaleSerializer, SaleItemSerializer
 from rest_framework import generics, viewsets
 from django.utils import timezone
+from datetime import datetime
 
 now = timezone.now()
-today = now.strftime("%Y-%m-%d")
+today = now.strftime("%d/%m/%Y")
 
 class SaleList(LoginRequiredMixin, generics.ListCreateAPIView):
     queryset = Sale.objects.all()
@@ -30,16 +31,20 @@ class SaleItemViewSet(viewsets.ModelViewSet):
 @login_required
 def sales_view(request):
     sales = Sale.objects.all().order_by('-id')
-    date_form = SaleForm()
+    form = DateForm()
+    selected_date = today
+    print(today, timezone.now())
+    selected_date_sales = Sale.objects.filter(date__date=now)
     if request.method == 'POST':
         selected_date = request.POST.get('date')
-        selected_date_sales = Sale.objects.filter(date__date=selected_date)
-        print(selected_date, today)
-    else:
-        selected_date_sales = Sale.objects.filter(date__date=today)
+        f_date = datetime.strptime(selected_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+        selected_date_sales = Sale.objects.filter(date__date=f_date)
+
+
     context = {
         'sales' : sales,
-        'date_form' : date_form,
+        'form' : form,
+        'selected_date' : selected_date,
         'selected_date_sales' : selected_date_sales,
     }
     return render(request, 'pos/sales.html', context)

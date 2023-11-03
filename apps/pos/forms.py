@@ -1,15 +1,11 @@
 from django import forms
-from .models import Sale, SaleItem
-from apps.products.models import Product
+from .models import SaleItem
 
-class SaleForm(forms.ModelForm):
-    class Meta:
-        model = Sale
-        fields = ["date"]
+class DatePickerWidget(forms.DateInput):
+    input_type = 'text'
 
-        widgets = {
-            "date": forms.DateInput(attrs={'type': 'date'}),
-        }
+class DateForm(forms.Form):
+    date = forms.DateField(widget=DatePickerWidget(attrs={'id': 'datepicker'}),required=False)
 
 class SaleItemForm(forms.ModelForm):
     class Meta:

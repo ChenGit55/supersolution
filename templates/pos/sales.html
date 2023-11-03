@@ -3,73 +3,89 @@
 {% block title %}{% endblock %}
 
 {% block head %}
-<style>
-    /* Reverter a ordem das linhas da tabela */
-    table {
-      width: 300%;
-      border-collapse: separate;
-      border-spacing: 10px;
-      text-align: center;
+  <style>
+    #sales-table th {
+        padding-left: 25px;
+    }
+    #sales-table td {
+        padding-left: 25px;
+        text-align: center;
     }
 </style>
 {% endblock %}
 
 {% block body %}
+    <h5><a rel="stylesheet" href="{% url 'new-sale' %}">Nova venda </a></h5>
 
-    <h1>Painel de Vendas</h1>
-    {% now "d/m/Y H:i" %}
+
     <form action="." method="POST">{% csrf_token %}
-        {{ date_form.date }}
-        <input type="submit" value="Selecionar">
+        <label for="datepicker">Selecione uma data:</label>
+        <input type="text" id="datepicker" name="date" value="{% now  'd/m/Y' %}">
+        <input type="submit" name="submit" id="submit" value="selecionar">
     </form>
-    <h5><a href="{% url 'new-sale' %}">Nova Venda</a></h5>
 
+    <hr>
+    <div style="text-align: center; font-weight: bold; color: red;">{{ selected_date }}</div>
 
-
-    <table>
+    <table id="sales-table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th style="text-align: right;">Valor</th>
-                <th>Hora</th>
-                <th>Vendedor</th>
-                <th>Loja</th>
+                <th>VALOR</th>
+                <th>HORA</th>
+                <th>VENDEDOR</th>
             </tr>
         </thead>
         <tbody>
             {% for sale in selected_date_sales %}
             <tr>
-                <td>{{ sale.id }} </td>
-                <td style="text-align: right;" >R$ {{ sale.formatted_total_sale  }}</td>
-                <td>{{ sale.date|date:"H:i" }}</td>
-                <td>{{ sale.user }}</td>
-                <td>{{ sale.store }}</td>
+                <td>
+                    {{ sale.id }}
+                </td>
+                <td>
+                   R$ {{ sale.formatted_total_sale }}
+                </td>
+                <td>
+                    {{ sale.date|date:"H:i" }}
+                </td>
+                <td>
+                    {{ sale.user }}
+                </td>
             </tr>
             {% endfor %}
+
         </tbody>
     </table>
-
-    <!-- <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th style="text-align: right;">Valor</th>
-                <th>Data</th>
-                <th>Vendedor</th>
-                <th>Loja</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sale in sales %}
-            <tr>
-                <td>{{ sale.id }} </td>
-                <td style="text-align: right;" >R$ {{ sale.formatted_total_sale  }}</td>
-                <td>{{ sale.formatted_date }} - {{sale.date|date:"Y"}}</td>
-                <td>{{ sale.user }}</td>
-                <td>{{ sale.store }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table> -->
+  <script>
+    $(document).ready(function () {
+      // Inicialize o DatePicker do Bootstrap
+      $('#datepicker').datepicker({
+        format: 'dd/mm/yyyy', // Formato de data personalizado
+        language: 'pt-BR',  // Idioma em português do Brasil
+        autoclose: true ,    // Fecha automaticamente após a seleção
+        endDate: "0d",
+        todayBtn: "linked",
+      });
+    });
+  </script>
 
 {% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemplo de DatePicker do Bootstrap</title>
+
+
+</head>
+<body>
+
+
+
+</body>
+</html>
