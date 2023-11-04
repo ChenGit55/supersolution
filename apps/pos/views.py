@@ -8,6 +8,7 @@ from .serializers import SaleSerializer, SaleItemSerializer
 from rest_framework import generics, viewsets
 from django.utils import timezone
 from datetime import datetime
+from django.db.models import Sum
 
 now = timezone.now().astimezone(timezone.get_current_timezone())
 today = now.strftime("%d/%m/%Y")
@@ -34,11 +35,19 @@ def sales_view(request):
     form = DateForm()
     selected_date = today
     print(now)
-    selected_date_sales = Sale.objects.filter(date__date=now)
+    if request.user.is_superuser:
+        selected_date_sales = Sale.objects.filter(date__date=now)
+    else:
+        selected_date_sales = Sale.objects.filter(date__date=now, user=request.user)
+    total_daily_sales = selected_date_sales.aggregate(total=Sum('total'))['total']
     if request.method == 'POST':
         selected_date = request.POST.get('date')
         f_date = datetime.strptime(selected_date, '%d/%m/%Y').strftime('%Y-%m-%d')
-        selected_date_sales = Sale.objects.filter(date__date=f_date)
+        if request.user.is_superuser:
+            selected_date_sales = Sale.objects.filter(date__date=f_date)
+        else:
+            selected_date_sales = Sale.objects.filter(date__date=f_date, user=request.user)
+        total_daily_sales = selected_date_sales.aggregate(total=Sum('total'))['total']
 
 
     context = {
@@ -46,6 +55,7 @@ def sales_view(request):
         'form' : form,
         'selected_date' : selected_date,
         'selected_date_sales' : selected_date_sales,
+        'total_daily_sales' : total_daily_sales,
     }
     return render(request, 'pos/sales.html', context)
 
@@ -75,6 +85,7 @@ def new_sale_view(request):
                 price = float(product_prices[index]),
                 quantity = int(quantities[index]),
             )
+        sale.save()
 
     context = {
         'form' : form,
