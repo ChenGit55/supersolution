@@ -39,6 +39,7 @@
                 <th>ID</th>
                 <th>VALOR</th>
                 <th>HORA</th>
+                <th>PAGAMENTO</th>
                 <th>VENDEDOR</th>
             </tr>
         </thead>
@@ -53,6 +54,9 @@
                 </td>
                 <td>
                     {{ sale.date|date:"H:i" }}
+                </td>
+                <td>
+                    {{ sale.payment_method }}
                 </td>
                 <td>
                     {{ sale.user }}

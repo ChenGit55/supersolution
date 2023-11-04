@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SaleItem, Sale
+from .models import SaleItem, Sale, PaymentMethod
 
 class SaleItemAdmin(admin.ModelAdmin):
     list_display = ['sale','product', 'quantity', 'price', 'total']
@@ -9,3 +9,4 @@ class SaleAdmin(admin.ModelAdmin):
 
 admin.site.register(SaleItem, SaleItemAdmin)
 admin.site.register(Sale, SaleAdmin)
+admin.site.register(PaymentMethod)
