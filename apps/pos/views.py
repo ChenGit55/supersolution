@@ -67,13 +67,15 @@ def new_sale_view(request):
     payment_methods = PaymentMethod.objects.all()
 
     if request.method == 'POST':
-        sale = Sale.objects.create(user=user, store=store)
+        payment_method_id = request.POST.get('payment-method')
+        payment_method = PaymentMethod.objects.get(id=payment_method_id)
+
+        sale = Sale.objects.create(user=user, store=store, payment_method=payment_method)
         form = SaleItemForm(request.POST)
 
         product_ids = request.POST.get('product_ids')
         product_prices = request.POST.get('product_prices')
         quantities = request.POST.get('quantities')
-        payment_method = request.POST.get('payment-method')
 
         product_ids = product_ids.split(',')
         product_prices = product_prices.split(',')

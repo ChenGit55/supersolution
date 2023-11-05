@@ -61,7 +61,7 @@
         Forma de pagamento:
         <select name="payment-method" id="payment-method">
             {% for payment in payment_methods %}
-                <option value="{{ payment }}">{{ payment }}</option>
+                <option value="{{ payment.id }}">{{ payment }}</option>
             {% endfor %}
         </select>
         Valor Recebido : <input type="text" name="payment-value" id="payment-value">
