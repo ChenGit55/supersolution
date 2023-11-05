@@ -2,9 +2,13 @@ var productSelect = document.getElementById('product-select');
 var priceField = document.getElementById('product-price');
 var quantityField = document.getElementById('product-quantity');
 var addButton = document.getElementById('add-product-button');
-var closeInovice = document.getElementById('close-inovice')
+var closeInoviceButton = document.getElementById('close-inovice')
 var inovice = document.getElementById('inovice');
 var inoviceTotal = document.getElementById('inovice-total');
+var paymentMethodSelect = document.getElementById('payment-method');
+var amountPaid = document.getElementById('payment-value');
+var paymentConfirmationButton = document.getElementById('payment-confirmation');
+var payment = document.getElementById('payment');
 let currentTotal = 0;
 
 
@@ -38,7 +42,7 @@ function inoviceData(productID,  productPrice, quantity) {
         },
         body: JSON.stringify(data)
     })
-    .then(response => {
+    .then(() => {
 
     })
     .catch(error => {
@@ -99,12 +103,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
             currentTotal += cFloat(totalCell.textContent);
             inoviceTotal.textContent = fCurrency(currentTotal);
+            amountPaid.value = inoviceTotal.textContent
         } else {
             console.log('dados inválidos');
         }
     });
 
-    closeInovice.addEventListener("click", function (event) {
+
+
+    var paymentP = document.createElement("p");
+    var changeP = document.createElement("p");
+    let paymentMethodValue = 0;
+
+    paymentConfirmationButton.addEventListener("click", function (event) {
+        var selectPayment = paymentMethodSelect.options[paymentMethodSelect.selectedIndex];
+        valuePaid = cFloat(amountPaid.value);
+
+        paymentMethodValue += valuePaid;
+        paymentP.setAttribute('method-value', paymentMethodValue);
+        payment.appendChild(paymentP);
+
+        displayPayment = fCurrency(paymentMethodValue);
+        paymentP.textContent = `${selectPayment.text} - ${displayPayment}`;
+
+        payment.appendChild(paymentP);
+        payment.style.display = "block";
+
+        if (currentTotal == 0 || paymentMethodValue < currentTotal) {
+            closeInoviceButton.disabled = true;
+        } else if ( paymentMethodValue > currentTotal ) {
+            changeP.textContent = `Troco: ${fCurrency(paymentMethodValue-currentTotal)}`
+            payment.appendChild(changeP);
+            paymentConfirmationButton.disabled = true;
+            closeInoviceButton.disabled = false;
+        }
+    })
+
+    closeInoviceButton.addEventListener("click", function (event) {
         var product = productSelect.options[productSelect.selectedIndex];
         var productID = product.getAttribute('value');
         const rows = inovice.getElementsByTagName("tr");

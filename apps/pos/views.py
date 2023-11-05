@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Sale, SaleItem
+from .models import Sale, SaleItem, PaymentMethod
 from .forms import SaleItemForm, DateForm
 from apps.products.models import Product
 from django.contrib.auth.decorators import login_required
@@ -64,6 +64,7 @@ def new_sale_view(request):
     form = SaleItemForm()
     user = request.user
     store = request.user.store
+    payment_methods = PaymentMethod.objects.all()
 
     if request.method == 'POST':
         sale = Sale.objects.create(user=user, store=store)
@@ -72,6 +73,7 @@ def new_sale_view(request):
         product_ids = request.POST.get('product_ids')
         product_prices = request.POST.get('product_prices')
         quantities = request.POST.get('quantities')
+        payment_method = request.POST.get('payment-method')
 
         product_ids = product_ids.split(',')
         product_prices = product_prices.split(',')
@@ -89,5 +91,6 @@ def new_sale_view(request):
 
     context = {
         'form' : form,
+        'payment_methods' : payment_methods
     }
     return render(request, 'pos/new-sale.html', context)

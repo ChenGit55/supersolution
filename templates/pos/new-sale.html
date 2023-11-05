@@ -30,6 +30,7 @@
         </select>
         <input type="text" id="product-price">
         <input type="number" id="product-quantity">
+
         <input type="button" id="add-product-button" value="Adicionar Produto">
     </form>
     <table>
@@ -44,14 +45,29 @@
         <tbody id="inovice"></tbody>
     </table>
     <hr>
-    <b> Total: <span id="inovice-total"></span></b>
+    <b>Valor Total: </b> <span id="inovice-total"></span>
+    <div style="display: none;"  id="payment">
+        <hr>
+       <u><b>PAGAMENTO</b></u>
+    </div>
+    <hr>
+
+
     <form action="." method="POST">{% csrf_token %}
 
         <input type="hidden" name="product_ids" id="product-ids">
         <input type="hidden" name="product_prices" id="product-prices">
         <input type="hidden" name="quantities" id="quantities">
-
-        <input type="submit" name="close-inovice" id="close-inovice" value="Confirmar">
+        Forma de pagamento:
+        <select name="payment-method" id="payment-method">
+            {% for payment in payment_methods %}
+                <option value="{{ payment }}">{{ payment }}</option>
+            {% endfor %}
+        </select>
+        Valor Recebido : <input type="text" name="payment-value" id="payment-value">
+        <input type="button" name="payment-confirmation" id="payment-confirmation" value="Confirmar">
+        <hr>
+        <input type="submit" name="close-inovice" id="close-inovice" value="Confirmar Venda" disabled>
     </form>
     <script src="{% static 'pos/js/pos.js' %}"></script>
 {% endblock %}
