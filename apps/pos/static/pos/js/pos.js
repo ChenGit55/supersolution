@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (currentTotal == 0 || paymentMethodValue < currentTotal) {
             closeInoviceButton.disabled = true;
-        } else if ( paymentMethodValue > currentTotal ) {
+        } else if ( paymentMethodValue >= currentTotal ) {
             changeP.textContent = `Troco: ${fCurrency(paymentMethodValue-currentTotal)}`
             payment.appendChild(changeP);
             paymentConfirmationButton.disabled = true;
