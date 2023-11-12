@@ -11,6 +11,7 @@ var paymentConfirmationButton = document.getElementById('payment-confirmation');
 var payment = document.getElementById('payment');
 var paymentTable = document.getElementById('payment-table');
 var totalPayment = document.getElementById('total-payment');
+var paymentChange = document.getElementById('payment-change');
 let currentTotal = 0;
 
 
@@ -115,7 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalRow = totalPayment.insertRow();
     const totalTextCell = totalRow.insertCell(0);
     const totalValueCell = totalRow.insertCell(1);
-    totalTextCell.textContent = 'Total'
+    totalTextCell.textContent = 'Total Pago:'
+
+    const changeRow = paymentChange.insertRow();
+    const changeTextCell = changeRow.insertCell(0);
+    const changeValueCell = changeRow.insertCell(1);
+    changeTextCell.textContent = 'Troco'
 
     paymentConfirmationButton.addEventListener("click", function (event) {
         var selectPayment = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text;
@@ -150,8 +156,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         totalPaid += cFloat(amountPaid.value);
-
         totalValueCell.textContent = fCurrency(totalPaid);
+
+        if (totalPaid >= currentTotal){
+            paymentConfirmationButton.disabled = true;
+            closeInoviceButton.disabled = false;
+            changeValueCell.textContent = fCurrency(totalPaid-currentTotal)
+        }
+
     });
 
     closeInoviceButton.addEventListener("click", function (event) {
@@ -165,6 +177,5 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('selecione um produto');
             event.preventDefault();
         }
-    })
-
+    });
 });
