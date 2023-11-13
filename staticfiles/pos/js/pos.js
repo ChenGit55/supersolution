@@ -9,6 +9,9 @@ var paymentMethodSelect = document.getElementById('payment-method');
 var amountPaid = document.getElementById('payment-value');
 var paymentConfirmationButton = document.getElementById('payment-confirmation');
 var payment = document.getElementById('payment');
+var paymentTable = document.getElementById('payment-table');
+var totalPayment = document.getElementById('total-payment');
+var paymentChange = document.getElementById('payment-change');
 let currentTotal = 0;
 
 
@@ -109,35 +112,60 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    let totalPaid = 0
+    const totalRow = totalPayment.insertRow();
+    const totalTextCell = totalRow.insertCell(0);
+    const totalValueCell = totalRow.insertCell(1);
+    totalTextCell.textContent = 'Total Pago:'
 
-
-    var paymentP = document.createElement("p");
-    var changeP = document.createElement("p");
-    let paymentMethodValue = 0;
+    const changeRow = paymentChange.insertRow();
+    const changeTextCell = changeRow.insertCell(0);
+    const changeValueCell = changeRow.insertCell(1);
+    changeTextCell.textContent = 'Troco'
 
     paymentConfirmationButton.addEventListener("click", function (event) {
-        var selectPayment = paymentMethodSelect.options[paymentMethodSelect.selectedIndex];
-        valuePaid = cFloat(amountPaid.value);
+        var selectPayment = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text;
+        let paymentFound = false;
 
-        paymentMethodValue += valuePaid;
-        paymentP.setAttribute('method-value', paymentMethodValue);
-        payment.appendChild(paymentP);
+        for (let i = 0; i < paymentTable.rows.length; i++) {
+            const currentRow = paymentTable.rows[i];
+            const methodText = currentRow.getAttribute('method-row');
+            const methodValue = currentRow.getAttribute('value-row');
+            const totalMethodValue = cFloat(methodValue) + cFloat(amountPaid.value);
 
-        displayPayment = fCurrency(paymentMethodValue);
-        paymentP.textContent = `${selectPayment.text} - ${displayPayment}`;
+            if (methodText === selectPayment) {
+                const newValue = currentRow.cells[1];
+                currentRow.setAttribute('value-row', totalMethodValue);
+                newValue.textContent = fCurrency(totalMethodValue);
+                paymentFound = true;
+                break;
+            }
+        }
 
-        payment.appendChild(paymentP);
-        payment.style.display = "block";
+        if (!paymentFound){
+            const paymentRow = paymentTable.insertRow();
+            const methodCell = paymentRow.insertCell(0);
+            const methodValueCell = paymentRow.insertCell(1);
 
-        if (currentTotal == 0 || paymentMethodValue < currentTotal) {
-            closeInoviceButton.disabled = true;
-        } else if ( paymentMethodValue >= currentTotal ) {
-            changeP.textContent = `Troco: ${fCurrency(paymentMethodValue-currentTotal)}`
-            payment.appendChild(changeP);
+            paymentRow.setAttribute('method-row', selectPayment);
+            paymentRow.setAttribute('value-row', amountPaid.value);
+            methodCell.textContent = paymentRow.getAttribute('method-row');
+            methodValueCell.textContent = fCurrency(paymentRow.getAttribute('value-row'));
+
+            payment.style.display = "block";
+        }
+
+        totalPaid += cFloat(amountPaid.value);
+        totalValueCell.textContent = fCurrency(totalPaid);
+
+        if (totalPaid >= currentTotal){
             paymentConfirmationButton.disabled = true;
             closeInoviceButton.disabled = false;
+            changeValueCell.textContent = fCurrency(totalPaid-currentTotal)
         }
-    })
+
+        amountPaid.value = ''
+    });
 
     closeInoviceButton.addEventListener("click", function (event) {
         var product = productSelect.options[productSelect.selectedIndex];
@@ -150,6 +178,5 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('selecione um produto');
             event.preventDefault();
         }
-    })
-
+    });
 });

@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
             changeValueCell.textContent = fCurrency(totalPaid-currentTotal)
         }
 
+        amountPaid.value = ''
     });
 
     closeInoviceButton.addEventListener("click", function (event) {
