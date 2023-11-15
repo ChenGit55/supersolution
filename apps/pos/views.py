@@ -9,6 +9,7 @@ from rest_framework import generics, viewsets
 from django.utils import timezone
 from datetime import datetime
 from django.db.models import Sum
+import json
 
 now = timezone.now().astimezone(timezone.get_current_timezone())
 today = now.strftime("%d/%m/%Y")
@@ -67,10 +68,14 @@ def new_sale_view(request):
     payment_methods = PaymentMethod.objects.all()
 
     if request.method == 'POST':
-        payment_method_id = request.POST.get('payment-method')
-        payment_method = PaymentMethod.objects.get(id=payment_method_id)
+        # payment_method_id = request.POST.get('payment-method')
+        # payment_method = PaymentMethod.objects.get(id=payment_method_id)
+        payments_data = request.POST.get('payments-data')
+        # payments_data = json.loads(payments_data)
 
-        sale = Sale.objects.create(user=user, store=store, payment_method=payment_method)
+        print(payments_data)
+
+        sale = Sale.objects.create(user=user, store=store)
         form = SaleItemForm(request.POST)
 
         product_ids = request.POST.get('product_ids')

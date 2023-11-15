@@ -148,9 +148,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const methodValueCell = paymentRow.insertCell(1);
 
             paymentRow.setAttribute('method-row', selectPayment);
-            paymentRow.setAttribute('value-row', amountPaid.value);
+            paymentRow.setAttribute('value-row', cFloat(amountPaid.value));
             methodCell.textContent = paymentRow.getAttribute('method-row');
             methodValueCell.textContent = fCurrency(paymentRow.getAttribute('value-row'));
+            methodCell.setAttribute('name', 'methods[]');
+            methodValueCell.setAttribute('name', 'values[]');
 
             payment.style.display = "block";
         }
@@ -178,5 +180,22 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('selecione um produto');
             event.preventDefault();
         }
+
+        var paymentData = {}
+        var paymentRow = paymentTable.getElementsByTagName('tr');
+        for (var r = 0; r < paymentRow.length; r++){
+            var methodRow = paymentRow[r].getAttribute('method-row');
+            var valueRow = parseFloat(paymentRow[r].getAttribute('value-row'));
+
+            if (!paymentData.hasOwnProperty(methodRow)) {
+                paymentData[methodRow] = valueRow;
+              } else {
+                paymentData[methodRow] += valueRow;
+              }
+        }
+        var jsonData = JSON.stringify(paymentData);
+
+        document.getElementById('payments-data').value = jsonData;
+
     });
 });
