@@ -56,7 +56,11 @@
                     {{ sale.date|date:"H:i" }}
                 </td>
                 <td>
-                    {{ sale.payment_method }}
+                    {% for payment in payments %}
+                        {% if payment.sale == sale %}
+                            {{ payment.method }}
+                        {% endif %}
+                    {% endfor %}
                 </td>
                 <td>
                     {{ sale.user }}

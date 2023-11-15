@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Sale, SaleItem, PaymentMethod
+from .models import Sale, SaleItem, PaymentMethod, Payment
 from .forms import SaleItemForm, DateForm
 from apps.products.models import Product
 from django.contrib.auth.decorators import login_required
@@ -33,6 +33,7 @@ class SaleItemViewSet(viewsets.ModelViewSet):
 @login_required
 def sales_view(request):
     sales = Sale.objects.all().order_by('-id')
+    payments = Payment.objects.all()
     form = DateForm()
     selected_date = today
     print(now)
@@ -53,6 +54,7 @@ def sales_view(request):
 
     context = {
         'sales' : sales,
+        'payments' : payments,
         'form' : form,
         'selected_date' : selected_date,
         'selected_date_sales' : selected_date_sales,
@@ -68,12 +70,8 @@ def new_sale_view(request):
     payment_methods = PaymentMethod.objects.all()
 
     if request.method == 'POST':
-        # payment_method_id = request.POST.get('payment-method')
-        # payment_method = PaymentMethod.objects.get(id=payment_method_id)
         payments_data = request.POST.get('payments-data')
-        # payments_data = json.loads(payments_data)
-
-        print(payments_data)
+        payments_data = json.loads(payments_data)
 
         sale = Sale.objects.create(user=user, store=store)
         form = SaleItemForm(request.POST)
@@ -85,6 +83,14 @@ def new_sale_view(request):
         product_ids = product_ids.split(',')
         product_prices = product_prices.split(',')
         quantities = quantities.split(',')
+
+        for method, value in payments_data.items():
+            method = PaymentMethod.objects.get(id=method)
+            Payment.objects.create(
+                sale = sale,
+                method=method,
+                value=value,
+            )
 
         for index in range(len(product_ids)):
             id = Product.objects.get(pk=product_ids[index])
