@@ -124,16 +124,17 @@ document.addEventListener("DOMContentLoaded", function () {
     changeTextCell.textContent = 'Troco'
 
     paymentConfirmationButton.addEventListener("click", function (event) {
-        var selectPayment = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text;
+        var selectPaymentID = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].value;
+        var selectPaymentText = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text;
         let paymentFound = false;
 
         for (let i = 0; i < paymentTable.rows.length; i++) {
             const currentRow = paymentTable.rows[i];
-            const methodText = currentRow.getAttribute('method-row');
+            const methodID = currentRow.getAttribute('method-id-row');
             const methodValue = currentRow.getAttribute('value-row');
             const totalMethodValue = cFloat(methodValue) + cFloat(amountPaid.value);
 
-            if (methodText === selectPayment) {
+            if (methodID === selectPaymentID) {
                 const newValue = currentRow.cells[1];
                 currentRow.setAttribute('value-row', totalMethodValue);
                 newValue.textContent = fCurrency(totalMethodValue);
@@ -147,12 +148,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const methodCell = paymentRow.insertCell(0);
             const methodValueCell = paymentRow.insertCell(1);
 
-            paymentRow.setAttribute('method-row', selectPayment);
+            paymentRow.setAttribute('method-id-row', selectPaymentID);
+            paymentRow.setAttribute('method-text-row', selectPaymentText);
             paymentRow.setAttribute('value-row', cFloat(amountPaid.value));
-            methodCell.textContent = paymentRow.getAttribute('method-row');
+            methodCell.textContent = paymentRow.getAttribute('method-text-row');
             methodValueCell.textContent = fCurrency(paymentRow.getAttribute('value-row'));
-            methodCell.setAttribute('name', 'methods[]');
-            methodValueCell.setAttribute('name', 'values[]');
 
             payment.style.display = "block";
         }
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var paymentData = {}
         var paymentRow = paymentTable.getElementsByTagName('tr');
         for (var r = 0; r < paymentRow.length; r++){
-            var methodRow = paymentRow[r].getAttribute('method-row');
+            var methodRow = paymentRow[r].getAttribute('method-id-row');
             var valueRow = parseFloat(paymentRow[r].getAttribute('value-row'));
 
             if (!paymentData.hasOwnProperty(methodRow)) {
