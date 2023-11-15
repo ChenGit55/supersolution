@@ -12,6 +12,10 @@ class PaymentMethod(models.Model):
     def __str__(self):
         return self.name
 
+class Payment(models.Model):
+    method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
+    value = models.PositiveIntegerField()
+
 
 class Sale(models.Model):
 
@@ -20,7 +24,7 @@ class Sale(models.Model):
     date = models.DateTimeField(verbose_name="data", max_length=8, default=timezone.now)
     # date = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    payment_method = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True, default=None)
 
     def calculate_total_sale(self):
         sale_items = self.saleitem_set.all()
