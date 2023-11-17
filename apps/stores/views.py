@@ -2,7 +2,6 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .models import Store
 from .forms import StoreForm
-from apps.inventory.models import Stock
 
 @login_required
 def store_view(request):
@@ -18,10 +17,6 @@ def create_store_view(request):
         form = StoreForm(request.POST)
         if form.is_valid():
             store = form.save()
-            Stock.objects.create(
-                name = f'Estoque({store})'
-            )
-            return redirect('stores')
     else:
         form = StoreForm()
 

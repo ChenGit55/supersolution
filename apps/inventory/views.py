@@ -2,14 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from apps.stores.models import Store
 from apps.accounts.models import CustomUser
-from .models import Item, Stock
+from .models import Item
 from .forms import ItemForm
 
 @login_required
 def inventory_view(request):
     items = Item.objects.all()
     stores = Store.objects.all()
-    stocks = Stock.objects.all()
     location_items = ""
 
     if request.method == 'POST':
@@ -23,7 +22,6 @@ def inventory_view(request):
     context = {
         'items' : items,
         'stores' : stores,
-        'stocks' : stocks,
         'current_location' : current_location,
         'location_items' : location_items,
     }
@@ -34,7 +32,6 @@ def add_product_view(request):
     form = ItemForm()
     items = Item.objects.all()
     stores = Store.objects.all()
-    stocks = Stock.objects.all()
 
     if request.method == 'POST':
         form = ItemForm(request.POST)
@@ -60,14 +57,12 @@ def add_product_view(request):
         'form' : form,
         'items' : items,
         'stores' : stores,
-        'stocks' : stocks,
     }
     return render(request, 'inventory/add-product.html', context)
 
 def transfer_product_view(request):
     items = Item.objects.all()
     stores = Store.objects.all()
-    stocks = Stock.objects.all()
     location_items = ""
     if request.method == 'POST':
         current_location= request.POST.get('location')
@@ -75,7 +70,6 @@ def transfer_product_view(request):
     context = {
         'items' : items,
         'stores' : stores,
-        'stocks' : stocks,
         'location_items' : location_items,
     }
     return render(request, 'inventory/transfer-product.html', context)
