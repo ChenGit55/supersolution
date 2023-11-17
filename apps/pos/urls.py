@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import sales_view, new_sale_view, SaleList, SaleViewSet, SaleItemList, SaleItemViewSet
+from .views import sales_view, new_sale_view, SaleList, SaleViewSet, SaleItemList, SaleItemViewSet,add_payment_methods
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -12,4 +12,5 @@ urlpatterns = [
     path('sales/', SaleList.as_view(), name='api-sales'),
     path('sales-items/', SaleItemList.as_view(), name='api-sales-items'),
     path('api/', include(router.urls)),
+    path('add-payment-methods', add_payment_methods, name='add-payment-methods' ),
 ]

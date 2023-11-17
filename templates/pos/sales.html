@@ -18,7 +18,8 @@
 {% endblock %}
 
 {% block body %}
-    <h5><a rel="stylesheet" href="{% url 'new-sale' %}">Nova venda </a></h5>
+    <h1>Vendas</h1>
+    <h5><a rel="stylesheet" href="{% url 'new-sale' %}">Nova venda </a>| <a href="{% url 'add-payment-methods' %}">Adicionar forma de pagamento</a></h5>
 
 
     <form action="." method="POST">{% csrf_token %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<h1>Adicionar forma de pagamento</h1>
+<hr>
+<form action="add-payment-methods" method="POST">{% csrf_token %}
+    Forma de pagamento: <input type="text" name="new-method">
+    <input type="submit">
+</form>
+<hr>
+{% for method in payment_methods %}
+    <p>{{ method }}</p>
+{% endfor %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

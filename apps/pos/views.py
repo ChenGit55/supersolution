@@ -107,3 +107,17 @@ def new_sale_view(request):
         'payment_methods' : payment_methods
     }
     return render(request, 'pos/new-sale.html', context)
+
+def add_payment_methods (request):
+    payment_methods = PaymentMethod.objects.all()
+    if request.method == 'POST':
+        method = request.POST.get('new-method')
+        new_method = PaymentMethod(name = method)
+        new_method.save()
+
+        print(method)
+
+    context = {
+        'payment_methods' : payment_methods,
+    }
+    return render(request, 'pos/payments.html', context)
