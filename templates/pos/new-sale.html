@@ -28,11 +28,12 @@
                 <option value="{{ choice.id }}" data-price="{{ choice.price }}">{{ choice.title }}</option>
             {% endfor %}
         </select>
-        <input type="text" id="product-price">
+        {{ "R$"|safe }}<input class="price" style="width: 100px;"  type="text" id="product-price">
         <input type="number" id="product-quantity">
 
         <input type="button" id="add-product-button" value="Adicionar Produto">
     </form>
+    <hr>
     <table>
         <thead>
             <tr>
@@ -78,12 +79,27 @@
                 <option value="{{ payment.id }}">{{ payment }}</option>
             {% endfor %}
         </select>
-        Valor Recebido : <input type="text" name="payment-value" id="payment-value">
-        <input type="button" name="payment-confirmation" id="payment-confirmation" value="Confirmar">
+        Valor Recebido : {{ "R$"|safe }}<input class="price" style="width: 100px;" type="text" id="payment-value">
+        <input type="button" name="payment-confirmation" id="payment-confirmation" value="Confirmar" disabled>
         <hr>
         <input type="submit" name="close-inovice" id="close-inovice" value="Confirmar Venda" disabled>
     </form>
+
+
     <script src="{% static 'pos/js/pos.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.price').on('input', function () {
+                var value = $(this).val();
+                value = value.replace(/[^0-9]/g, '');
+                value = value.replace(/^0+/, '');
+                if (value.length > 2) {
+                    value = value.slice(0, -2) + ',' + value.slice(-2);
+                }
+                $(this).val(value);
+            });
+        });
+    </script>
 {% endblock %}
 {% block footer %}
 {% endblock %}

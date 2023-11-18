@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     productSelect.addEventListener('change', function () {
         var product = productSelect.options[productSelect.selectedIndex];
         var selectedPrice = product.getAttribute('data-price');
-        priceField.value = fCurrency(selectedPrice);
+        priceField.value = fCurrency(selectedPrice).replace('R$', '');
         if ( quantityField.value === '' ) {
             quantityField.value = 1
         }
@@ -85,6 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
     addButton.addEventListener("click", function (event) {
         var product = productSelect.options[productSelect.selectedIndex];
         var productID = product.getAttribute('value');
+
+        paymentConfirmationButton.disabled = false
 
         if ( product.text !== '' && quantityField.value > 0 && cFloat(priceField.value) > 0 ) {
 
@@ -106,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             currentTotal += cFloat(totalCell.textContent);
             inoviceTotal.textContent = fCurrency(currentTotal);
-            amountPaid.value = inoviceTotal.textContent
+            amountPaid.value = fCurrency(currentTotal).replace('R$', '')
         } else {
             console.log('dados inválidos');
         }
