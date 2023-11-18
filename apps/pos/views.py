@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Sale, SaleItem, PaymentMethod, Payment
 from .forms import SaleItemForm, DateForm
 from apps.products.models import Product
+from apps.inventory.models import Item
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .serializers import SaleSerializer, SaleItemSerializer
@@ -68,6 +69,7 @@ def new_sale_view(request):
     user = request.user
     store = request.user.store
     payment_methods = PaymentMethod.objects.all()
+    inventory_items = Item.objects.all()
 
     if request.method == 'POST':
         payments_data = request.POST.get('payments-data')
@@ -100,11 +102,32 @@ def new_sale_view(request):
                 price = float(product_prices[index]),
                 quantity = int(quantities[index]),
             )
+            inventory_item = Item.objects.filter(product=id, location=store).first()
+            if inventory_item:
+                inventory_item.quantity -= int(quantities[index])
+                print(inventory_item.product, inventory_item.quantity, inventory_item.location)
+            else:
+                Item.objects.create(
+                    product = id,
+                    quantity = 0 - int(quantities[index]),
+                    location = store
+                )
+                print(f'{id} criado')
+
+            try:
+                inventory_item.save()
+            except:
+                print('não salvo!')
+
+
+
         sale.save()
+
 
     context = {
         'form' : form,
-        'payment_methods' : payment_methods
+        'payment_methods' : payment_methods,
+        'inventory_items' : inventory_items,
     }
     return render(request, 'pos/new-sale.html', context)
 
