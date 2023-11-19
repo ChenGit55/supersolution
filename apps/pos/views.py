@@ -41,7 +41,7 @@ def sales_view(request):
     if request.user.is_superuser:
         selected_date_sales = Sale.objects.filter(date__date=now)
     else:
-        selected_date_sales = Sale.objects.filter(date__date=now, user=request.user)
+        selected_date_sales = Sale.objects.filter(date__date=now, user=request.user, store=request.user.store)
     total_daily_sales = selected_date_sales.aggregate(total=Sum('total'))['total']
     if request.method == 'POST':
         selected_date = request.POST.get('date')
