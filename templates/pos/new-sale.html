@@ -3,13 +3,30 @@
 {% block title %}{% endblock %}
 {% block head %}
 <style>
-    th {
-        padding-left: 15px;
+
+    .inovice-table {
+        display: block;
+        width: 500px;
+        height: 400px;
+        overflow: auto;
+        border-collapse: collapse;
     }
-    td {
+
+    .inovice-table tbody {
+        height: 400px;
+        overflow: auto;
+    }
+
+    .inovice-table thead tr th{
+        font-size: 9pt;
+    }
+
+    .inovice-table thead tr th, .inovice-table tbody tr td {
         padding-left: 15px;
+        width: 100px;
         text-align: center;
     }
+
     #inovice {
         background-color: rgba(255, 228, 196, 0.5);
     }
@@ -34,19 +51,17 @@
         <input type="button" id="add-product-button" value="Adicionar Produto">
     </form>
     <hr>
-    <div style="height: 400px; overflow: auto;">
-        <table>
-            <thead>
-                <tr>
-                    <th>PRODUTO</th>
-                    <th>PREÇO</th>
-                    <th>QUANTIDADE</th>
-                    <th>TOTAL</th>
-                </tr>
-            </thead>
-            <tbody id="inovice"></tbody>
-        </table>
-    </div>
+    <table class="inovice-table">
+        <thead>
+            <tr>
+                <th>PRODUTO</th>
+                <th>PREÇO</th>
+                <th>QUANTIDADE</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody id="inovice"></tbody>
+    </table>
     <hr>
     <b>Valor Total: </b> <span id="inovice-total"></span>
     <div style="display: none;"  id="payment">
