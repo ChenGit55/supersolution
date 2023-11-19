@@ -95,11 +95,27 @@ document.addEventListener("DOMContentLoaded", function () {
             const priceCell = inoviceRow.insertCell(1);
             const quantityCell = inoviceRow.insertCell(2);
             const totalCell = inoviceRow.insertCell(3);
+            const deleteRow = inoviceRow.insertCell(4);
 
             productCell.textContent = product.text;
             priceCell.textContent = priceField.value;
             quantityCell.textContent = quantityField.value;
             totalCell.textContent = fCurrency(cFloat(priceField.value)*quantityField.value);
+            var deleteButton = document.createElement('button');
+            deleteButton.innerHTML = "Delete"
+            deleteRow.appendChild(deleteButton)
+
+            deleteButton.addEventListener("click", function(event) {
+                var row = this.parentNode.parentNode; // Obtém a linha (tr) pai do botão
+                var totalCell = row.cells[3]; // Obtém a célula com o total
+
+                var total = parseFloat(totalCell.getAttribute("cell-total")); // Obtém o total da célula
+                currentTotal -= total; // Subtrai o total atual
+                inoviceTotal.textContent = fCurrency(currentTotal); // Atualiza o total na tabela
+                amountPaid.value = fCurrency(currentTotal).replace('R$', '');
+
+                row.remove(); // Remove a linha do DOM
+              });
 
             productCell.setAttribute(`cell-id`, productID);
             priceCell.setAttribute(`cell-price`, cFloat(priceCell.textContent));
@@ -113,6 +129,8 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('dados inválidos');
         }
     });
+
+
 
     let totalPaid = 0
     const totalRow = totalPayment.insertRow();
