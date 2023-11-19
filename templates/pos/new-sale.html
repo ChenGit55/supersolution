@@ -34,17 +34,19 @@
         <input type="button" id="add-product-button" value="Adicionar Produto">
     </form>
     <hr>
-    <table>
-        <thead>
-            <tr>
-                <th>PRODUTO</th>
-                <th>PREÇO</th>
-                <th>QUANTIDADE</th>
-                <th>TOTAL</th>
-            </tr>
-        </thead>
-        <tbody id="inovice"></tbody>
-    </table>
+    <div style="height: 400px; overflow: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>PRODUTO</th>
+                    <th>PREÇO</th>
+                    <th>QUANTIDADE</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody id="inovice"></tbody>
+        </table>
+    </div>
     <hr>
     <b>Valor Total: </b> <span id="inovice-total"></span>
     <div style="display: none;"  id="payment">
