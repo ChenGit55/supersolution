@@ -9,7 +9,7 @@
     <div class="d-flex justify-content-center">
         <table class="table w-75">
             <thead>
-                <tr>
+                <tr style="text-align: center;">
                     <th>Produto</th>
                     <th>Quantidade</th>
                     <th>Preço</th>
@@ -18,8 +18,8 @@
             </thead>
             <tbody>
                 {% for item in sale.saleitem_set.all %}
-                    <tr>
-                        <td>
+                    <tr style="text-align: center;">
+                        <td style="text-align: left;">
                             {{ item.product.title }}
                         </td>
                         <td>
@@ -35,10 +35,12 @@
                 {% endfor %}
             </tbody>
             <tbody>
-                <td></td>
-                <td></td>
-                <td style="font-weight: bold;">Total:</td>
-                <td>{{ sale.total }}</td>
+                <tr style="text-align: center;">
+                    <td></td>
+                    <td></td>
+                    <td style="font-weight: bold;">Total:</td>
+                    <td>{{ sale.total }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
