@@ -34,10 +34,14 @@
                     </tr>
                 {% endfor %}
             </tbody>
+            <tbody>
+                <td></td>
+                <td></td>
+                <td style="font-weight: bold;">Total:</td>
+                <td>{{ sale.total }}</td>
+            </tbody>
         </table>
     </div>
-
-    <p>Total: {{ sale.total }}</p>
 
     <a href="{% url 'sales' %}">Voltar para a lista de vendas</a>
 {% endblock %}
