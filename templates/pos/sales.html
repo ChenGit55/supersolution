@@ -4,22 +4,9 @@
 
 {% block head %}
   <style>
-    #sales-table {
-        text-align: center;
-    }
-    #sales-table th {
-        padding-left: 25px;
-    }
-    #sales-table tbody tr {
+    .clickable-row:hover {
         cursor: pointer;
-    }
-    #sales-table tbody tr:hover {
         background-color: rgb(187, 192, 204);
-    }
-
-    #sales-table td {
-        padding-left: 25px;
-        text-align: center;
     }
 </style>
 {% endblock %}
@@ -40,8 +27,9 @@
     </div>
     <hr>
     <div style="text-align: end; font-weight: bold">{{ selected_date }}</div>
-    <div style="display: flex; justify-content: center;">
-        <table id="sales-table">
+
+    <div class="d-flex justify-content-center">
+        <table class="table w-75">
             <thead>
                 <tr>
                     <th>ID</th>

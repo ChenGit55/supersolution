@@ -3,23 +3,41 @@
 {% block body %}
     <h1>Detalhes da Venda</h1>
     <p>Data da Venda: {{ sale.date }}</p>
-    <p>Usuário: {{ sale.user.username }}</p>
+    <p>Vendedor: {{ sale.user.username }}</p>
+
+
+    <div class="d-flex justify-content-center">
+        <table class="table w-75">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in sale.saleitem_set.all %}
+                    <tr>
+                        <td>
+                            {{ item.product.title }}
+                        </td>
+                        <td>
+                            {{ item.quantity }}
+                        </td>
+                        <td>
+                            {{ item.price }}
+                        </td>
+                        <td>
+                            {{ item.total }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
     <p>Total: {{ sale.total }}</p>
-
-    <h2>Produtos</h2>
-
-    {{ sale.item.product.title }}
-
-    <ul>
-        {% for item in sale.saleitem_set.all %}
-            <li>
-                Produto: {{ item.product.title }}
-                Quantidade: {{ item.quantity }}
-                Preço unitário: {{ item.price }}
-                Total: {{ item.total }}
-            </li>
-        {% endfor %}
-    </ul>
 
     <a href="{% url 'sales' %}">Voltar para a lista de vendas</a>
 {% endblock %}
