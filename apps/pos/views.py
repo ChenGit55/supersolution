@@ -137,6 +137,10 @@ def new_sale_view(request):
     return render(request, 'pos/new-sale.html', context)
 
 @login_required
+def exchange_view(request):
+    return render(request, 'pos/exchange.html', {})
+
+@login_required
 def add_payment_methods (request):
     payment_methods = PaymentMethod.objects.all()
     if request.method == 'POST':
