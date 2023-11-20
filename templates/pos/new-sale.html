@@ -37,33 +37,34 @@
     <p>Vendedor: {{ user.username }}</p>
     <p>Loja: {{ user.store }}</p>
 
-    <form action="." method="POST">{% csrf_token %}
+    <form style="display: flex; justify-content: center;" action="." method="POST">{% csrf_token %}
+            <select name="product-select" id="product-select">
+                <option value="">---------</option>
+                {% for choice in form.product.field.queryset %}
+                    <option value="{{ choice.id }}" data-price="{{ choice.price }}">{{ choice.title }}</option>
+                {% endfor %}
+            </select>
+            {{ "R$"|safe }}<input class="price" style="width: 100px;"  type="text" id="product-price">
+            Qtd: <input style="width: 60px;" type="number" id="product-quantity">
 
-        <select name="product-select" id="product-select">
-            <option value="">---------</option>
-            {% for choice in form.product.field.queryset %}
-                <option value="{{ choice.id }}" data-price="{{ choice.price }}">{{ choice.title }}</option>
-            {% endfor %}
-        </select>
-        {{ "R$"|safe }}<input class="price" style="width: 100px;"  type="text" id="product-price">
-        Qtd: <input style="width: 60px;" type="number" id="product-quantity">
-
-        <input type="button" id="add-product-button" value="Adicionar Produto">
+            <input type="button" id="add-product-button" value="Adicionar Produto">
     </form>
     <hr>
-    <table class="inovice-table">
-        <thead>
-            <tr>
-                <th>PRODUTO</th>
-                <th>PREÇO</th>
-                <th>QUANTIDADE</th>
-                <th>TOTAL</th>
-            </tr>
-        </thead>
-        <tbody id="inovice"></tbody>
-    </table>
-    <hr class="mt-5">
-    <b>Valor Total: </b> <span id="inovice-total"></span>
+    <div class="mb-5" style="display: flex; justify-content: center;">
+        <table class="inovice-table">
+            <thead>
+                <tr>
+                    <th>PRODUTO</th>
+                    <th>PREÇO</th>
+                    <th>QUANTIDADE</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody id="inovice"></tbody>
+        </table>
+    </div>
+    <hr>
+    <b style="margin-left: 30%;">Valor Total: </b> <span id="inovice-total"></span>
     <div style="display: none;"  id="payment">
         <hr>
        <p><u><b>PAGAMENTO</b></u></p>
@@ -84,7 +85,7 @@
     <hr>
 
 
-    <form action="." method="POST">{% csrf_token %}
+    <form style="text-align: center;" action="." method="POST">{% csrf_token %}
 
         <input type="hidden" name="product_ids" id="product-ids">
         <input type="hidden" name="product_prices" id="product-prices">

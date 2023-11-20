@@ -33,48 +33,49 @@
     </div>
     <hr>
     <div style="text-align: end; font-weight: bold">{{ selected_date }}</div>
+    <div style="display: flex; justify-content: center;">
+        <table id="sales-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>VALOR</th>
+                    <th>HORA</th>
+                    <th>PAGAMENTO</th>
+                    <th>VENDEDOR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in selected_date_sales %}
+                <tr>
+                    <td>
+                        {{ sale.id }}
+                    </td>
+                    <td>
+                        {{ "R$"|safe }}  {{ sale.total }}
+                    </td>
+                    <td>
+                        {{ sale.date|date:"H:i" }}
+                    </td>
+                    <td>
+                        {% for payment in payments %}
+                            {% if payment.sale == sale %}
+                                {{ payment.method }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ sale.user }}
+                    </td>
+                </tr>
+                {% endfor %}
 
-    <table id="sales-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>VALOR</th>
-                <th>HORA</th>
-                <th>PAGAMENTO</th>
-                <th>VENDEDOR</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sale in selected_date_sales %}
-            <tr>
-                <td>
-                    {{ sale.id }}
-                </td>
-                <td>
-                    {{ "R$"|safe }}  {{ sale.total }}
-                </td>
-                <td>
-                    {{ sale.date|date:"H:i" }}
-                </td>
-                <td>
-                    {% for payment in payments %}
-                        {% if payment.sale == sale %}
-                            {{ payment.method }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td>
-                    {{ sale.user }}
-                </td>
-            </tr>
-            {% endfor %}
-
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
     <hr>
-      <div style="text-align: center; color: gray;">
-        Vendas Dia: {{ selected_date_sales|length }} |  Total Dia : {{ "R$"|safe }} {{ total_daily_sales|floatformat:2 }}
-      </div>
+    <div style="text-align: center; color: gray;">
+    Vendas Dia: {{ selected_date_sales|length }} |  Total Dia : {{ "R$"|safe }} {{ total_daily_sales|floatformat:2 }}
+    </div>
 
   <script>
     $(document).ready(function () {
