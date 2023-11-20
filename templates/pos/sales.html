@@ -10,6 +10,13 @@
     #sales-table th {
         padding-left: 25px;
     }
+    #sales-table tbody tr {
+        cursor: pointer;
+    }
+    #sales-table tbody tr:hover {
+        background-color: rgb(187, 192, 204);
+    }
+
     #sales-table td {
         padding-left: 25px;
         text-align: center;
@@ -46,27 +53,28 @@
             </thead>
             <tbody>
                 {% for sale in selected_date_sales %}
-                <tr>
-                    <td>
+                    <tr class="clickable-row" data-href="{% url 'sale-detail' sale_id=sale.id %}">
+                        <td>
+
                         {{ sale.id }}
-                    </td>
-                    <td>
-                        {{ "R$"|safe }}  {{ sale.total }}
-                    </td>
-                    <td>
-                        {{ sale.date|date:"H:i" }}
-                    </td>
-                    <td>
-                        {% for payment in payments %}
-                            {% if payment.sale == sale %}
-                                {{ payment.method }}
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {{ sale.user }}
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            {{ "R$"|safe }}  {{ sale.total }}
+                        </td>
+                        <td>
+                            {{ sale.date|date:"H:i" }}
+                        </td>
+                        <td>
+                            {% for payment in payments %}
+                                {% if payment.sale == sale %}
+                                    {{ payment.method }}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {{ sale.user }}
+                        </td>
+                    </tr>
                 {% endfor %}
 
             </tbody>
@@ -76,6 +84,14 @@
     <div style="text-align: center; color: gray;">
     Vendas Dia: {{ selected_date_sales|length }} |  Total Dia : {{ "R$"|safe }} {{ total_daily_sales|floatformat:2 }}
     </div>
+
+<script>
+$(document).ready(function() {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
+</script>
 
   <script>
     $(document).ready(function () {

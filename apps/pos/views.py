@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Sale, SaleItem, PaymentMethod, Payment
 from .forms import SaleItemForm, DateForm
 from apps.products.models import Product
@@ -62,6 +62,11 @@ def sales_view(request):
         'total_daily_sales' : total_daily_sales,
     }
     return render(request, 'pos/sales.html', context)
+
+@login_required
+def sale_datail_view(request, sale_id):
+    sale_detail = get_object_or_404 (Sale, id=sale_id)
+    return render(request, 'pos/sale-detail.html',{'sale' : sale_detail})
 
 @login_required
 def new_sale_view(request):
@@ -131,6 +136,7 @@ def new_sale_view(request):
     }
     return render(request, 'pos/new-sale.html', context)
 
+@login_required
 def add_payment_methods (request):
     payment_methods = PaymentMethod.objects.all()
     if request.method == 'POST':
