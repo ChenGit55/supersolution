@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% block body %}
+<form action="." method="POST">{% csrf_token %}
+    Nº da Nota<input type="text" name="exchange_inovice_id" id="exchange_inovice_id" >
+    <input type="submit" value="Enviar">
+</form>
 {% endblock %}
 
 {% block footer %}

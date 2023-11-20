@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Sale, SaleItem, PaymentMethod, Payment
 from .forms import SaleItemForm, DateForm
 from apps.products.models import Product
@@ -138,6 +138,12 @@ def new_sale_view(request):
 
 @login_required
 def exchange_view(request):
+    sales = Sale.objects.all()
+    if request.method == 'POST':
+        exchange_inovice_id = request.POST.get('exchange_inovice_id')
+        exchange_sale = Sale.objects.get(id=exchange_inovice_id)
+        exchange_url = reverse('sale-detail', args=[exchange_inovice_id])
+        return redirect(exchange_url)
     return render(request, 'pos/exchange.html', {})
 
 @login_required
