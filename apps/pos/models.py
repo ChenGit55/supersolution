@@ -18,8 +18,9 @@ class Sale(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     store = models.ForeignKey(Store, on_delete=models.SET_DEFAULT, default=None)
     date = models.DateTimeField(verbose_name="data", max_length=8, default=timezone.now)
-    # date = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    serial = models.TextField(null=True, blank=True)
+    observation = models.TextField(null=True, blank=True)
 
     def calculate_total_sale(self):
         sale_items = self.saleitem_set.all()
