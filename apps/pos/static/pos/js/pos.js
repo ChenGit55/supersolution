@@ -99,11 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             productCell.textContent = product.text
-            priceCell.textContent = priceField.value
+            priceCell.textContent = fCurrency(priceField.value)
             quantityCell.textContent = quantityField.value
             totalCell.textContent = fCurrency(cFloat(priceField.value)*quantityField.value)
 
             productCell.classList.add('product-column')
+            priceCell.classList.add('price-column')
+            totalCell.classList.add('total-column')
 
             var deleteButton = document.createElement('button')
             deleteButton.innerHTML = "Delete"
