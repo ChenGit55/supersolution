@@ -63,15 +63,18 @@ class Payment(models.Model):
 
     def __str__(self):
         return f'{self.method} - {self.value}'
-
+    
+class DailyReport:
+    initial = models.PositiveIntegerField()
+    final = models.PositiveIntegerField()
+    cash = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateTimeField(verbose_name="data", max_length=8, default=timezone.now)
 
 
 @receiver(pre_delete, sender=Product)
 def handle_deleted_product(sender, instance, **kwargs):
     old_sales = SaleItem.objects.filter(product=instance)
-    # Para cada venda antiga, você pode tomar uma ação específica
     for sale_item in old_sales:
-        # Neste exemplo, você pode definir o nome do produto para "Produto excluído"
         sale_item.product.title = "Produto excluído"
         sale_item.product.save()
 

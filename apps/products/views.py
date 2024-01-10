@@ -1,15 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import AddProductForm
 from .models import Product
-from apps.inventory.models import Item
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .serializers import ProductSerializer
-from rest_framework import generics
-
-class ProductList(LoginRequiredMixin, generics.ListCreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
 
 @login_required
 def product_list_view(request, code=None):

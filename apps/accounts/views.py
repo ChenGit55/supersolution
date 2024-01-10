@@ -5,17 +5,15 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 def signup_view(request):
     form = CustomUserCreationForm()
+
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
 
         if form.is_valid():
             user = form.save()
             return redirect('login')
-
-    context = {
-         'form' : form,
-    }
-    return render(request, 'accounts/signup.html', context)
+        
+    return render(request, 'accounts/signup.html', {'form' : form})
 
 def login_view(request):
     if request.method == "POST":

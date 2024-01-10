@@ -4,9 +4,6 @@ from .forms import SaleItemForm, DateForm
 from apps.products.models import Product
 from apps.inventory.models import Item
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .serializers import SaleSerializer, SaleItemSerializer
-from rest_framework import generics, viewsets
 from django.utils import timezone
 from datetime import datetime
 from django.db.models import Sum
@@ -15,21 +12,6 @@ import json
 now = timezone.now().astimezone(timezone.get_current_timezone())
 today = now.strftime("%d/%m/%Y")
 
-class SaleList(LoginRequiredMixin, generics.ListCreateAPIView):
-    queryset = Sale.objects.all()
-    serializer_class = SaleSerializer
-
-class SaleViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
-    queryset = Sale.objects.all()
-    serializer_class = SaleSerializer
-
-class SaleItemList(LoginRequiredMixin, generics.ListCreateAPIView):
-    queryset = SaleItem.objects.all()
-    serializer_class = SaleItemSerializer
-
-class SaleItemViewSet(viewsets.ModelViewSet):
-    queryset = SaleItem.objects.all()
-    serializer_class = SaleItemSerializer
 
 @login_required
 def sales_view(request):
@@ -123,7 +105,6 @@ def new_sale_view(request):
                 inventory_item.save()
             except:
                 print('não salvo!')
-
 
 
         sale.save()
