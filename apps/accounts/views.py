@@ -10,7 +10,7 @@ def signup_view(request):
         form = CustomUserCreationForm(request.POST)
 
         if form.is_valid():
-            user = form.save()
+            form.save()
             return redirect('login')
         
     return render(request, 'accounts/signup.html', {'form' : form})
@@ -20,10 +20,12 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+
         if user is None:
-            context = {'error': 'Invalid username or password!'}
-            return render(request, 'accounts/login.html', context)
+            return render(request, 'accounts/login.html', {'error': 'Invalid username or password!'})
+        
         login(request, user)
+
         return redirect('home')
     return render(request, 'accounts/login.html',{})
 
@@ -44,14 +46,17 @@ def profile_view(request):
 @login_required
 def edit_profile_view(request):
     user = request.user
+
     if request.method == "POST":
         form = CustomUserChangeForm(request.POST, instance=user)
+        
         if form.is_valid():
             form.save()
             return redirect('profile')
     else:
         initial_data = {'username': user.username}
         form = CustomUserChangeForm(initial=initial_data, instance=user)
+
     context = {
         'user' : user,
         'form' : form

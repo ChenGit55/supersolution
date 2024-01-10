@@ -19,15 +19,17 @@ def sales_view(request):
     payments = Payment.objects.all()
     form = DateForm()
     selected_date = today
-    print(now)
+
     if request.user.is_superuser:
         selected_date_sales = Sale.objects.filter(date__date=now)
     else:
         selected_date_sales = Sale.objects.filter(date__date=now, user=request.user, store=request.user.store)
     total_daily_sales = selected_date_sales.aggregate(total=Sum('total'))['total']
+
     if request.method == 'POST':
         selected_date = request.POST.get('date')
         f_date = datetime.strptime(selected_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+
         if request.user.is_superuser:
             selected_date_sales = Sale.objects.filter(date__date=f_date)
         else:
@@ -90,6 +92,7 @@ def new_sale_view(request):
                 quantity = int(quantities[index]),
             )
             inventory_item = Item.objects.filter(product=id, location=store).first()
+
             if inventory_item:
                 inventory_item.quantity -= int(quantities[index])
                 print(inventory_item.product, inventory_item.quantity, inventory_item.location)
@@ -106,9 +109,7 @@ def new_sale_view(request):
             except:
                 print('não salvo!')
 
-
         sale.save()
-
 
     context = {
         'form' : form,
@@ -120,16 +121,19 @@ def new_sale_view(request):
 @login_required
 def exchange_view(request):
     sales = Sale.objects.all()
+
     if request.method == 'POST':
         exchange_inovice_id = request.POST.get('exchange_inovice_id')
         exchange_sale = Sale.objects.get(id=exchange_inovice_id)
         exchange_url = reverse('sale-detail', args=[exchange_inovice_id])
         return redirect(exchange_url)
+    
     return render(request, 'pos/exchange.html', {})
 
 @login_required
 def add_payment_methods (request):
     payment_methods = PaymentMethod.objects.all()
+
     if request.method == 'POST':
         method = request.POST.get('new-method')
         new_method = PaymentMethod(name = method)
@@ -137,7 +141,4 @@ def add_payment_methods (request):
 
         print(method)
 
-    context = {
-        'payment_methods' : payment_methods,
-    }
-    return render(request, 'pos/payments.html', context)
+    return render(request, 'pos/payments.html', {'payment_methods' : payment_methods})
